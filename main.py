@@ -11,6 +11,7 @@ import os
 import torch.nn as nn
 import torch
 from tqdm import tqdm
+from torch.cuda.amp import autocast, GradScaler
 
 STOPPING_EPOCH = 2000 # Must be multiple of 5 to match with the gradient accumulation steps
 RUN_EVAL = False
@@ -59,8 +60,9 @@ if opts.path_load_model is not None and os.path.exists(opts.path_load_model):
 
 #DEFINE OPTIMIZER
 optimizer = torch.optim.AdamW(model.parameters(), lr=opts.lr)
+scaler = GradScaler()
 
-#TRAIN LOOP
+#TRAIN & EVAL LOOP
 for epoch in range(opts.num_epochs):
     t_loss = 0
     v_loss = 0
@@ -72,11 +74,13 @@ for epoch in range(opts.num_epochs):
         targets = targets.to(opts.device)
         
         optimizer.zero_grad()
-        outputs = model(inputs)
-        
-        loss = opts.criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()
+        with autocast():
+            outputs = model(inputs)
+            loss = opts.criterion(outputs, targets)
+            
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
 
         t_loss +=loss.item()
 
