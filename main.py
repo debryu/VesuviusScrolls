@@ -105,3 +105,7 @@ for epoch in range(opts.num_epochs):
             v_loss +=loss.item()
 
     print('E',epoch+1,'L',v_loss/len(valid_ds))
+    break
+
+if __name__ == "__main__":
+    main()

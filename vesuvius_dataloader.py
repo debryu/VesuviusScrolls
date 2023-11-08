@@ -39,7 +39,7 @@ names = os.listdir(base_folder+'numpy/')
 fragments=[]
 for n in names:
     size = tuple(map(int, n.split('_')[1].split('.')[0].split('-')))
-    temp = np.memmap(base_folder+'numpy/'+n, dtype=np.float32, mode='r', shape=size)
+    temp = np.memmap('C:/'+'numpy/'+n, dtype=np.float32, mode='r', shape=size)
     fragments.append(temp)
 ###############################################################################
 
@@ -53,7 +53,7 @@ class SubvolumeDataset(data.Dataset):
         self.task = task
         
     def __len__(self):
-        return len(np.concatenate(self.pixels,axis=0))
+        return len(self.pixels)
     
     def __getitem__(self, idx):
         current_task = self.task
@@ -66,8 +66,14 @@ class SubvolumeDataset(data.Dataset):
                 current_task = 1
 
         #randomly pick one of the fragments
-        randfrag = random.choice([0,1,2])
-        y, x = self.pixels[randfrag][idx]
+        if idx > 6578944 and idx < 11710840:
+            randfrag=1
+        elif idx > 11710839:
+            randfrag=2
+        else:
+            randfrag=0
+        
+        y, x = self.pixels[idx]
         subvolume = self.image_stack[randfrag]
         t1 = self.label[randfrag]
         t2 = self.edge[randfrag]
@@ -76,7 +82,10 @@ class SubvolumeDataset(data.Dataset):
         rand = np.random.rand()
         subvolume = subvolume[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         subvolume = torch.tensor(subvolume)
+        
+        #print(subvolume.shape, SCAN_DEPTH, WINDOW*2+ODD_WINDOW)
         subvolume = subvolume.view(1, SCAN_DEPTH, WINDOW*2+ODD_WINDOW, WINDOW*2+ODD_WINDOW)
+        
         if current_task == 0:
             inklabel = t1[y, x].view(1)
             inkpatch = t1[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
@@ -203,11 +212,11 @@ small_rect = (1175, 3602, EVAL_WINDOW-1, EVAL_WINDOW-1) #H and W bust be a multi
 
 #LOAD THE DATA
 training_points_1, validation_points_1 = extract_training_points(FRAG1_EDGES_LABEL, small_rect)
-training_points_3, validation_points_3 = extract_training_points(FRAG1_EDGES_LABEL, small_rect)
-training_points_4, validation_points_4 = extract_training_points(FRAG1_EDGES_LABEL, small_rect)
+training_points_3, validation_points_3 = extract_training_points(FRAG3_EDGES_LABEL, small_rect)
+training_points_4, validation_points_4 = extract_training_points(FRAG4_EDGES_LABEL, small_rect)
 
-tpoints=[training_points_1,training_points_3,training_points_4]
-vpoints=[validation_points_1,validation_points_3,validation_points_4]
+tpoints=np.concatenate([training_points_1,training_points_3,training_points_4], axis=0)
+vpoints=np.concatenate([validation_points_1,validation_points_3,validation_points_4], axis=0)
 fraglbl=[FRAG1_LABEL,FRAG3_LABEL,FRAG4_LABEL]
 fragedg=[FRAG1_EDGES_LABEL, FRAG3_EDGES_LABEL,FRAG4_EDGES_LABEL]
 
@@ -216,5 +225,5 @@ valid_ds = SubvolumeDataset(fragments, fraglbl, fragedg, vpoints,0)
 #train_ds = SubvolumeDataset(frag1_scan, FRAG1_LABEL, FRAG1_EDGES_LABEL, training_points_1,0)
 #valid_ds = SubvolumeDataset(frag1_scan, FRAG1_LABEL, FRAG1_EDGES_LABEL, validation_points_1,0)
 
-
-
+train_ds[0]
+len(train_ds)
