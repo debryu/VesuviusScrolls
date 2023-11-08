@@ -6,6 +6,7 @@ import math
 
 
 class Net(torch.nn.Module):
+
     def __init__(
         self,
         opts,

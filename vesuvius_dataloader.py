@@ -97,7 +97,7 @@ class SubvolumeDataset(data.Dataset):
         
         #print(inkpatch.shape)
         return subvolume, inkpatch, current_task
-        return subvolume, inklabel, self.task
+        #return subvolume, inklabel, self.task
 
 
 '''

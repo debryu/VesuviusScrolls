@@ -28,7 +28,7 @@ opts = Options(
     path_exp_dir='exps/test',
     gpu_ids=[0],
     path_load_dataset='data/all_data',
-    num_epochs=1000,
+    num_epochs=1,
     batch_size=dataloader.BATCH_SIZE,
     lr=0.0000002,
     criterion=nn.MSELoss,
@@ -69,14 +69,15 @@ for epoch in range(opts.num_epochs):
     
     model.train()
     for data in tqdm(train_dl, total=int(len(train_ds)/train_dl.batch_size)):
-        inputs, targets = data
-        inputs = inputs.to(opts.device)
-        targets = targets.to(opts.device)
+        signal, target, task = data
+        signal = signal.to(opts.device)
+        target = target.to(opts.device)
+        task = task.to(opts.device)
         
         optimizer.zero_grad()
         with autocast():
-            outputs = model(inputs)
-            loss = opts.criterion(outputs, targets)
+            outputs = model(signal,task)
+            loss = opts.criterion(outputs, target)
             
         scaler.scale(loss).backward()
         scaler.step(optimizer)
@@ -84,17 +85,19 @@ for epoch in range(opts.num_epochs):
 
         t_loss +=loss.item()
 
+
     print('E',epoch+1,'L',t_loss/len(train_ds))
     
     model.eval()
     with torch.no_grad():
         for data in valid_dl:
-            inputs, targets = data
-            inputs = inputs.to(opts.device)
-            targets = targets.to(opts.device)
+            signal, target, task = data
+            signal = signal.to(opts.device)
+            target = target.to(opts.device)
+            task = task.to(opts.device)
             
-            outputs = model(inputs)
-            loss = opts.criterion(outputs,targets)
+            outputs = model(signal,task)
+            loss = opts.criterion(outputs,target)
             
             v_loss +=loss.item()
 
