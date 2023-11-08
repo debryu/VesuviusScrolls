@@ -12,6 +12,7 @@ import torch.nn as nn
 import torch
 from tqdm import tqdm
 from torch.cuda.amp import autocast, GradScaler
+from torch.utils.data import DataLoader
 
 STOPPING_EPOCH = 2000 # Must be multiple of 5 to match with the gradient accumulation steps
 RUN_EVAL = False
@@ -29,9 +30,9 @@ opts = Options(
     gpu_ids=[0],
     path_load_dataset='data/all_data',
     num_epochs=1,
-    batch_size=dataloader.BATCH_SIZE,
+    batch_size=2,#dataloader.BATCH_SIZE,
     lr=0.0000002,
-    criterion=nn.MSELoss,
+    criterion=nn.MSELoss(reduction='mean'),
     device='cuda',
     interval_val=2,
     seed=0,
@@ -42,19 +43,21 @@ opts = Options(
     id = None,
     tags = [],
     nn_module = 'RepMode',
-    adopted_datasets = None,
+    adopted_datasets = ['Normal'],#,'Infrared'],
     path_load_model = None, #"exps/test/checkpoints/model_test_0012.p"
     monitor_model = False,
 )
 
 #LOAD DATA
-train_ds = dataloader.train_dataset
-valid_ds = dataloader.val_dataset
-train_dl = dataloader.train_loader
-valid_dl = dataloader.val_loader
+train_ds = dataloader.train_ds
+valid_ds = dataloader.valid_ds
+#CREATE DATALOADER
+train_dl = DataLoader(train_ds, batch_size=opts.batch_size, shuffle=True)
+valid_dl = DataLoader(valid_ds, batch_size=opts.batch_size, shuffle=False)
+
 
 #LOAD MODEL
-model = Net()
+model = Net(opts).to(opts.device)
 if opts.path_load_model is not None and os.path.exists(opts.path_load_model):
     model.load_state(opts.path_load_model)
 
@@ -77,7 +80,7 @@ for epoch in range(opts.num_epochs):
         optimizer.zero_grad()
         with autocast():
             outputs = model(signal,task)
-            loss = opts.criterion(outputs, target)
+            loss = opts.criterion(outputs.unsqueeze(1), target.unsqueeze(1)).squeeze()
             
         scaler.scale(loss).backward()
         scaler.step(optimizer)

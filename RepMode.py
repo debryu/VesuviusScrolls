@@ -68,6 +68,9 @@ class Net(torch.nn.Module):
         x = self.decoder_block2(x, x_skip2, task_emb)
         x = self.decoder_block1(x, x_skip1, task_emb)
         outputs = self.conv_out(x, task_emb)
+        
+        #Collapse the z axis
+        outputs = torch.mean(outputs.squeeze(1), dim=1)
 
         return outputs
 

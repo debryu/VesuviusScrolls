@@ -12,6 +12,8 @@ import os
 import time
 import gc
 import cv2 as cv
+import random
+
 
 FROM = 0
 WINDOW = 32
@@ -42,43 +44,47 @@ for n in names:
 ###############################################################################
 
 class SubvolumeDataset(data.Dataset):
+    
     def __init__(self, image_stack, label, edge, pixels, task = None):
         self.edge = edge
         self.image_stack = image_stack
         self.label = label
         self.pixels = pixels
         self.task = task
+        
     def __len__(self):
-        return len(self.pixels)
-    def __getitem__(self, index):
+        return len(np.concatenate(self.pixels,axis=0))
+    
+    def __getitem__(self, idx):
         current_task = self.task
         # If there is no task, assign one randomly
         if current_task == None:
-            #print("randomizing")
             T = np.random.rand()
             if T < 0.667:
                 current_task= 0
             else:
                 current_task = 1
 
-        y, x = self.pixels[index]
-        #print(y, x)
-        #print(self.image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW].shape)
+        #randomly pick one of the fragments
+        randfrag = random.choice([0,1,2])
+        y, x = self.pixels[randfrag][idx]
+        subvolume = self.image_stack[randfrag]
+        t1 = self.label[randfrag]
+        t2 = self.edge[randfrag]
+
         #Generate a random number between 0 and 1
         rand = np.random.rand()
-        subvolume = self.image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
+        subvolume = subvolume[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         subvolume = torch.tensor(subvolume)
         subvolume = subvolume.view(1, SCAN_DEPTH, WINDOW*2+ODD_WINDOW, WINDOW*2+ODD_WINDOW)
         if current_task == 0:
-            inklabel = self.label[y, x].view(1)
-            inkpatch = self.label[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
+            inklabel = t1[y, x].view(1)
+            inkpatch = t1[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         if current_task == 1:
-            inklabel = self.edge[y, x].view(1)/255
-            inkpatch = self.edge[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]/255
-        #print(inkpatch)
-        #print(current_task)
-        #plt.imshow(inkpatch.cpu().numpy())
-        #plt.show()
+            inklabel = t2[y, x].view(1)/255
+            inkpatch = t2[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]/255
+
+
         
         # Flipping
         '''
@@ -158,19 +164,25 @@ def create_edge_mask(image_path):
 FRAG1_MASK = np.array(Image.open( base_folder + f"Fragments/Frag1/mask.png").convert('1'))
 FRAG3_MASK = np.array(Image.open( base_folder + f"Fragments/Frag3/mask.png").convert('1'))
 FRAG4_MASK = np.array(Image.open( base_folder + f"Fragments/Frag4/mask.png").convert('1'))
-FRAG1_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag1/inklabels.png")
+
+
 FRAG1_EDGES_LABEL, FRAG1_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragments/Frag1/inklabels.png")
+FRAG3_EDGES_LABEL, FRAG3_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragments/Frag3/inklabels.png")
+FRAG4_EDGES_LABEL, FRAG4_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragments/Frag4/inklabels.png")
+
 FRAG1_IR_PNG = Image.open(base_folder + f"Fragments/Frag1/irnc.png")
-FRAG3_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag3/inklabels.png")
-FRAG4_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag4/inklabels.png")
+
+
+
+FRAG1_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag1/inklabels.png")
 FRAG1_LABEL = torch.from_numpy(np.array(FRAG1_LABEL_PNG)).gt(0).float().to(device)
-#plt.imshow(FRAG1_LABEL.cpu().numpy())
-#plt.show()
-FRAG1_IR = torch.from_numpy(np.array(FRAG1_IR_PNG)).float().to(device)
-#plt.imshow(FRAG1_IR.cpu().numpy())
-#plt.show()
+FRAG3_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag3/inklabels.png")
 FRAG3_LABEL = torch.from_numpy(np.array(FRAG3_LABEL_PNG)).gt(0).float().to(device)
+FRAG4_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag4/inklabels.png")
 FRAG4_LABEL = torch.from_numpy(np.array(FRAG4_LABEL_PNG)).gt(0).float().to(device)
+
+FRAG1_IR = torch.from_numpy(np.array(FRAG1_IR_PNG)).float().to(device)
+
 # Get the label as an image
 label_as_img = Image.open(base_folder + f"Fragments/Frag1/inklabels.png")
 ir_as_img = Image.open(base_folder + f"Fragments/Frag1/irnc.png")
@@ -188,11 +200,21 @@ Cut out a small window for validation during training
 small_rect = (1175, 3602, EVAL_WINDOW-1, EVAL_WINDOW-1) #H and W bust be a multiple of 64
 '''
 '''
-print("Loading the scan 1...")
-frag1_scan = fragments[0]
+
+#LOAD THE DATA
 training_points_1, validation_points_1 = extract_training_points(FRAG1_EDGES_LABEL, small_rect)
-train_frag1 = SubvolumeDataset(frag1_scan, FRAG1_LABEL, FRAG1_EDGES_LABEL, training_points_1,0)
-validation_frag1 = SubvolumeDataset(frag1_scan, FRAG1_LABEL, FRAG1_EDGES_LABEL, validation_points_1,0)
+training_points_3, validation_points_3 = extract_training_points(FRAG1_EDGES_LABEL, small_rect)
+training_points_4, validation_points_4 = extract_training_points(FRAG1_EDGES_LABEL, small_rect)
+
+tpoints=[training_points_1,training_points_3,training_points_4]
+vpoints=[validation_points_1,validation_points_3,validation_points_4]
+fraglbl=[FRAG1_LABEL,FRAG3_LABEL,FRAG4_LABEL]
+fragedg=[FRAG1_EDGES_LABEL, FRAG3_EDGES_LABEL,FRAG4_EDGES_LABEL]
+
+train_ds = SubvolumeDataset(fragments, fraglbl, fragedg, tpoints,0)
+valid_ds = SubvolumeDataset(fragments, fraglbl, fragedg, vpoints,0)
+#train_ds = SubvolumeDataset(frag1_scan, FRAG1_LABEL, FRAG1_EDGES_LABEL, training_points_1,0)
+#valid_ds = SubvolumeDataset(frag1_scan, FRAG1_LABEL, FRAG1_EDGES_LABEL, validation_points_1,0)
 
 
 
