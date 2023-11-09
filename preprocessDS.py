@@ -81,12 +81,21 @@ def split_numpy_layers(numpy_layers_folder = "G:/VS_CODE/CV/Vesuvius Challenge/F
   files = [os.path.join(numpy_layers_folder, filename) for filename in os.listdir(numpy_layers_folder) if filename.endswith('.npy')]
   images = []
   size = (14830,9506)
+  # Save the first half
+  for i,filename in enumerate(tqdm(files)):
+    image = np.memmap(os.path.join(numpy_layers_folder, filename), dtype=np.float32, mode='r', shape=size)
+    images.append(image[:(size[0]//2)+65,:])
+  image_stack = np.stack(images, axis=0)
+  shp = np.shape(image_stack)
+  np.save(output_folder + f'F2part1_{shp[0]}-{shp[1]}-{shp[2]}', image_stack)
+  images = []
+  # Save the second half
   for i,filename in enumerate(tqdm(files)):
     image = np.memmap(os.path.join(numpy_layers_folder, filename), dtype=np.float32, mode='r', shape=size)
     images.append(image[(size[0]//2)-65:,:])
   image_stack = np.stack(images, axis=0)
   shp = np.shape(image_stack)
-  np.save(output_folder + f'F2part1_{shp[0]}-{shp[1]}-{shp[2]}', image_stack)
+  np.save(output_folder + f'F2part2_{shp[0]}-{shp[1]}-{shp[2]}', image_stack)
   
 def split_label_image(filename = "mask.png"):
   size = (14830,9506)
