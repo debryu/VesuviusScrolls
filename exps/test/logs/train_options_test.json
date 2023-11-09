@@ -1,0 +1,25 @@
+{
+    "adopted_datasets": null,
+    "batch_size": 6,
+    "debugging": false,
+    "epoch_checkpoint": 20,
+    "exp_name": "test",
+    "gpu_ids": [
+        0
+    ],
+    "id": null,
+    "interval_checkpoint": null,
+    "interval_val": 2,
+    "lr": 2e-07,
+    "monitor_model": false,
+    "nn_module": "RepMode",
+    "num_epochs": 1000,
+    "path_exp_dir": "exps/test",
+    "path_load_dataset": "data/all_data",
+    "path_load_model": null,
+    "path_metric_dir": "exps/test\\metrics",
+    "path_pred_dir": "exps/test\\preds",
+    "run_name": "\"Second\"",
+    "seed": 0,
+    "tags": []
+}
