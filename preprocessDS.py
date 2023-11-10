@@ -103,10 +103,10 @@ def split_label_image(filename = "mask.png"):
   plt.imshow(FRAG2_LABEL_PNG)
   plt.show()
   print(FRAG2_LABEL_PNG)
-  FRAG2_LABEL = torch.from_numpy(np.array(FRAG2_LABEL_PNG))
+  FRAG2_LABEL = torch.from_numpy(np.array(FRAG2_LABEL_PNG)).gt(0)
   print(FRAG2_LABEL)
-  FRAG2_LABEL1 = FRAG2_LABEL[:(size[0]//2)+65,:]*255
-  FRAG2_LABEL2 = FRAG2_LABEL[(size[0]//2)-65:,:]*255
+  FRAG2_LABEL1 = FRAG2_LABEL[:(size[0]//2)+65,:]
+  FRAG2_LABEL2 = FRAG2_LABEL[(size[0]//2)-65:,:]
   
   # Save it as PNG image
   FRAG2_LABEL_PNG1 = Image.fromarray(FRAG2_LABEL1.numpy())
@@ -114,6 +114,6 @@ def split_label_image(filename = "mask.png"):
   FRAG2_LABEL_PNG1.save("G:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag2/" + f"part1_{filename}")
   FRAG2_LABEL_PNG2.save("G:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag2/" + f"part2_{filename}")
 
-split_numpy_layers()
+split_label_image("inklabels.png")
 #create_3D_volume_from_tif(scroll_number = 2)
 #create_numpy_dataset_from_3D_volume(scroll_number = 2)

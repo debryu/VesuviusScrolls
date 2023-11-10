@@ -3,7 +3,37 @@ sys.path.append('C:/Users/debryu/Desktop/VS_CODE/HOME/CV/Vesuvius Challenge/Vesu
 import vesuvius_dataloader as dataloader
 import matplotlib.pyplot as plt
 import numpy as np
+import torch
+from tqdm import tqdm
 
+total_pixels = 0
+white_pixels = 0    
+for i,batch in enumerate(tqdm(dataloader.train_loader)):
+    chunks, labels, tasks, id = batch
+    lab1,lab2 = labels
+    id1,id2 = id
+    id1 = int(id1)
+    id2 = int(id2)
+    #print(id1,id2)
+    total_pixels += 64*64*2
+    white_pixels += torch.sum(lab1) + torch.sum(lab2)
+    #print(dataloader.dataset['object'][id1])
+    #print(dataloader.dataset['object'][id2])
+    #print(torch.max(lab1),torch.max(lab2))
+    
+    if(i > 2000):
+        break
+
+
+#WITH 64 we get 46%s
+print("Total pixels: ",total_pixels)
+print("White pixels: ",white_pixels)
+print("Percentage: ",100*white_pixels/total_pixels, "%")
+
+
+#SHOW THEM IN A GRID
+
+'''
 for batch in dataloader.train_loader:
     chunks, labels, tasks = batch
     # Plotting side by side
@@ -28,3 +58,4 @@ for batch in dataloader.train_loader:
 
     # Show the plot
     plt.show()
+'''
