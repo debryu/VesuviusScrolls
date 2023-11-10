@@ -73,8 +73,18 @@ def train(model, dataloader, opts, epoch, optimizer, scaler, grad_acc_steps=8, e
             targets = target.unsqueeze(1).to(torch.float64)
             # Target shape: [2,1,64,64]
             loss = opts.criterion(outputs, targets).squeeze()
-            #print(loss)
-            loss = torch.mean(loss)
+            loss_reference = torch.mean(loss).detach()
+            # Apply a gaussian filter to the output
+            center = ((64-1)/2,(64-1)/2)
+            weight = losses.gaussian_kernel(64,center, sigma = losses.SIGMA)
+            weight = torch.tensor(weight).to(opts.device).to(torch.float64)
+            # Just to visualize that is working
+            #wei = self.gaussian_kernel(4,(1.5,1.5),1.5)
+            #wei = torch.tensor(wei).to(self.device)
+            #tensor = torch.tensor(np.ones((4, 4))).to(self.device)
+            #print(tensor*wei)
+            loss = loss * weight
+            loss = torch.mean(loss)*3333
             train_loss.append(loss.item())
         loss = loss/grad_acc_steps
         scaler.scale(loss).backward()
