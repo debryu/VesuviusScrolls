@@ -18,12 +18,12 @@ from PIL import Image
 import torch.utils.data as data
 import gc
 import utils.losses as losses
-
+import wandb
 
 STOPPING_EPOCH = 200 # Must be multiple of 8 to match with the gradient accumulation steps
 RUN_EVAL = False
 EVAL_WINDOW = 150
-WANDB = False
+WANDB = True
 plot_prev = False
 prev_image_folder = "G:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/previews/"
 
@@ -38,7 +38,7 @@ opts = Options(
     num_epochs=10,
     batch_size = 4,
     eval_batch_size = 2,
-    lr=0.0001,
+    lr=0.00001,
     criterion=nn.MSELoss(reduction='none'),
     #criterion = losses.dice_loss(),
     interval_val=1,
@@ -47,7 +47,7 @@ opts = Options(
     debugging=False,
     interval_checkpoint=None,
     epoch_checkpoint = 20,
-    run_name = '"Second"',
+    run_name = "Fifth",
     id = None,
     tags = [],
     nn_module = 'RepMode',
@@ -140,6 +140,18 @@ def evaluate(model, dataloader, opts, epoch, prev_image_folder = "G:/VS_CODE/CV/
 
 
 def main():
+
+    if WANDB:
+        wandb.init(
+            settings=wandb.Settings(start_method="thread"),
+            project='SSP',
+            name= opts.run_name,
+            tags=opts.tags,
+            config=opts,
+            id=None,
+            save_code=True,
+            allow_val_change=True,
+        )
     train_ds = dataloader.train_ds
     valid_ds = dataloader.validation_frag1
     #LOAD DATA
@@ -157,10 +169,23 @@ def main():
 
     #TRAIN & EVAL LOOP
     for epoch in range(opts.num_epochs):    
-        train(model, train_dl, opts, epoch, optimizer, scaler)
+        losses = train(model, train_dl, opts, epoch, optimizer, scaler)
+        stats = {
+                    '[TRAIN] loss/iter': losses,
+                    '[TRAIN] loss/epoch': np.mean(losses),
+                 }
+        if WANDB:
+            wandb.log(stats)
         gc.collect()
         if (epoch+1) % opts.interval_val == 0:
             evaluate(model, validation_dl, opts, epoch)
+            losses = train(model, train_dl, opts, epoch, optimizer, scaler)
+            stats = {
+                        '[VAL] loss/iter': losses,
+                        '[VAL] loss/epoch': np.mean(losses),
+                    }
+            if WANDB:
+                wandb.log(stats)
             gc.collect()
 
 
