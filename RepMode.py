@@ -1,10 +1,26 @@
 
 import torch
+import torch.nn as nn
 from torch.nn import functional as F
 import torch.utils.checkpoint as cp
 import math
+import matplotlib.pyplot as plt 
 
-
+class FReLU(nn.Module):
+    r""" FReLU formulation. The funnel condition has a window size of kxk. (k=3 by default)
+    """
+    def __init__(self, in_channels):
+        super().__init__()
+        self.conv_frelu = torch.nn.Conv3d(in_channels, in_channels, kernel_size = 3, stride = 1, padding = 1, groups = in_channels)
+        self.bn_frelu = torch.nn.BatchNorm3d(in_channels)
+        
+    def forward(self, x):
+        #print(x.shape)
+        y = self.conv_frelu(x)
+        y = self.bn_frelu(y)
+        x = torch.max(x, y)
+        return x
+    
 class Net(torch.nn.Module):
 
     def __init__(
@@ -41,6 +57,15 @@ class Net(torch.nn.Module):
 
         # conv out
         self.conv_out = MoDEConv(self.num_experts, self.num_tasks, self.mult_chan, self.out_channels, kernel_size=5, padding='same', conv_type='final')
+        self.condensing1 = torch.nn.ConvTranspose2d(64,1, kernel_size=2, stride=2)
+        self.condensing2 = torch.nn.ConvTranspose2d(64,1, kernel_size=12, stride=12)
+        self.condensing3 = torch.nn.ConvTranspose2d(64,1, kernel_size=24, stride=24)
+        self.pooling1 = torch.nn.AvgPool2d(kernel_size=2, stride=2)
+        self.pooling2 = torch.nn.AvgPool2d(kernel_size=12, stride=12)
+        self.pooling3 = torch.nn.AvgPool2d(kernel_size=24, stride=24)
+
+        self.final_activation = torch.nn.Sigmoid()
+        #self.condensing2 = torch.nn.Conv2d(64*4,1, kernel_size=25, stride=1)
 
     def one_hot_task_embedding(self, task_id):
         N = task_id.shape[0]
@@ -68,7 +93,29 @@ class Net(torch.nn.Module):
         x = self.decoder_block2(x, x_skip2, task_emb)
         x = self.decoder_block1(x, x_skip1, task_emb)
         outputs = self.conv_out(x, task_emb)
+        #print(outputs.shape)
+        # Squeeze to 2D
+        outputs = outputs.squeeze(1)
+        #outputs = torch.mean(outputs, dim=1).unsqueeze(1)
+        
+        outputs_scale_1 = self.condensing1(outputs)
+        # [N, 64, 64, 64] -> [N, 1, 64, 64]
+        outputs_scale_1 = self.pooling1(outputs_scale_1)
 
+        outputs_scale_2 = self.condensing2(outputs)
+        # [N, 64, 64, 64] -> [N, 1, 64, 64]
+        outputs_scale_2 = self.pooling2(outputs_scale_2)
+
+        outputs_scale_3 = self.condensing3(outputs)
+        # [N, 64, 64, 64] -> [N, 1, 64, 64]
+        outputs_scale_3 = self.pooling3(outputs_scale_3)
+
+        outputs = torch.mean(torch.stack([outputs_scale_1, outputs_scale_2, outputs_scale_3], dim=1), 1)
+        
+        outputs = self.final_activation(outputs)
+        #print(outputs.shape)
+        #outputs = outputs.squeeze(-1).squeeze(-1).reshape(outputs.shape[0],1,64,64)
+        #print(outputs.shape)
         return outputs
 
 
@@ -81,7 +128,8 @@ class MoDEEncoderBlock(torch.nn.Module):
         self.conv_down = torch.nn.Sequential(
             torch.nn.Conv3d(out_chan, out_chan, kernel_size=2, stride=2, bias=False),
             torch.nn.BatchNorm3d(out_chan),
-            torch.nn.ReLU(inplace=True),
+            FReLU(out_chan),
+            #torch.nn.ReLU(inplace=True),
         )
 
     def forward(self, x, t):
@@ -98,7 +146,8 @@ class MoDEDecoderBlock(torch.nn.Module):
         self.convt = torch.nn.Sequential(
             torch.nn.ConvTranspose3d(in_chan, out_chan, kernel_size=2, stride=2, bias=False),
             torch.nn.BatchNorm3d(out_chan),
-            torch.nn.ReLU(inplace=True),
+            FReLU(out_chan),
+            #torch.nn.ReLU(inplace=True),
         )
         self.conv_less = MoDESubNet2Conv(num_experts, num_tasks, in_chan, out_chan)
 
