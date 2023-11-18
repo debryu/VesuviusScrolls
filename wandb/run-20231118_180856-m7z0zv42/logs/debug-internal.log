@@ -1,0 +1,32 @@
+2023-11-18 18:08:56,944 INFO    StreamThr :7948 [internal.py:wandb_internal():86] W&B internal server running at pid: 7948, started at: 2023-11-18 18:08:56.943985
+2023-11-18 18:08:56,952 DEBUG   HandlerThread:7948 [handler.py:handle_request():146] handle_request: status
+2023-11-18 18:08:56,955 INFO    WriterThread:7948 [datastore.py:open_for_write():85] open: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231118_180856-m7z0zv42\run-m7z0zv42.wandb
+2023-11-18 18:08:56,960 DEBUG   SenderThread:7948 [sender.py:send():380] send: header
+2023-11-18 18:08:57,047 DEBUG   SenderThread:7948 [sender.py:send():380] send: run
+2023-11-18 18:08:57,537 INFO    SenderThread:7948 [dir_watcher.py:__init__():211] watching files in: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231118_180856-m7z0zv42\files
+2023-11-18 18:08:57,538 INFO    SenderThread:7948 [sender.py:_start_run_threads():1122] run started: m7z0zv42 with start time 1700327336.944969
+2023-11-18 18:08:57,559 DEBUG   HandlerThread:7948 [handler.py:handle_request():146] handle_request: check_version
+2023-11-18 18:08:57,560 DEBUG   SenderThread:7948 [sender.py:send_request():407] send_request: check_version
+2023-11-18 18:08:57,674 DEBUG   HandlerThread:7948 [handler.py:handle_request():146] handle_request: run_start
+2023-11-18 18:08:57,709 DEBUG   HandlerThread:7948 [system_info.py:__init__():32] System info init
+2023-11-18 18:08:57,710 DEBUG   HandlerThread:7948 [system_info.py:__init__():47] System info init done
+2023-11-18 18:08:57,710 INFO    HandlerThread:7948 [system_monitor.py:start():194] Starting system monitor
+2023-11-18 18:08:57,712 INFO    SystemMonitor:7948 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-11-18 18:08:57,712 INFO    HandlerThread:7948 [system_monitor.py:probe():214] Collecting system info
+2023-11-18 18:08:57,718 INFO    SystemMonitor:7948 [interfaces.py:start():190] Started cpu monitoring
+2023-11-18 18:08:57,721 INFO    SystemMonitor:7948 [interfaces.py:start():190] Started disk monitoring
+2023-11-18 18:08:57,724 INFO    SystemMonitor:7948 [interfaces.py:start():190] Started gpu monitoring
+2023-11-18 18:08:57,731 INFO    SystemMonitor:7948 [interfaces.py:start():190] Started memory monitoring
+2023-11-18 18:08:57,746 INFO    SystemMonitor:7948 [interfaces.py:start():190] Started network monitoring
+2023-11-18 18:08:57,748 DEBUG   HandlerThread:7948 [system_info.py:probe():196] Probing system
+2023-11-18 18:08:57,751 DEBUG   HandlerThread:7948 [system_info.py:_probe_git():181] Probing git
+2023-11-18 18:08:57,919 DEBUG   HandlerThread:7948 [system_info.py:_probe_git():189] Probing git done
+2023-11-18 18:08:57,919 DEBUG   HandlerThread:7948 [system_info.py:probe():244] Probing system done
+2023-11-18 18:08:57,919 DEBUG   HandlerThread:7948 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.9.12', 'heartbeatAt': '2023-11-18T17:08:57.749961', 'startedAt': '2023-11-18T17:08:56.927963', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'C:\\Users\\debryu\\Desktop\\VS_CODE\\HOME\\CV\\Vesuvius Challenge\\VesuviusScrolls\\main.py', 'codePathLocal': 'main.py', 'codePath': 'main.py', 'git': {'remote': 'https://github.com/debryu/VesuviusScrolls', 'commit': '91c5471baec0c87f469d6860740796bf18afa416'}, 'email': 'nicola.debole@gmail.com', 'root': 'C:/Users/debryu/Desktop/VS_CODE/HOME/CV/Vesuvius Challenge/VesuviusScrolls', 'host': 'DESKTOP-VDBR0MJ', 'username': 'debryu', 'executable': 'C:\\Users\\debryu\\anaconda3\\envs\\repmode\\python.exe', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 3301.0, 'min': 0.0, 'max': 3301.0}, 'cpu_freq_per_core': [{'current': 3301.0, 'min': 0.0, 'max': 3301.0}], 'disk': {'/': {'total': 930.9518623352051, 'used': 885.4480285644531}}, 'gpu': 'NVIDIA GeForce RTX 3060', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 3060', 'memory_total': 12884901888}], 'memory': {'total': 15.924671173095703}}
+2023-11-18 18:08:57,919 INFO    HandlerThread:7948 [system_monitor.py:probe():224] Finished collecting system info
+2023-11-18 18:08:57,919 INFO    HandlerThread:7948 [system_monitor.py:probe():227] Publishing system info
+2023-11-18 18:08:57,919 DEBUG   HandlerThread:7948 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-11-18 18:08:57,920 DEBUG   HandlerThread:7948 [system_info.py:_save_pip():68] Saving pip packages done
+2023-11-18 18:08:57,921 DEBUG   HandlerThread:7948 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-11-18 18:08:58,556 INFO    Thread-16 :7948 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231118_180856-m7z0zv42\files\conda-environment.yaml
+2023-11-18 18:08:58,557 INFO    Thread-16 :7948 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231118_180856-m7z0zv42\files\requirements.txt

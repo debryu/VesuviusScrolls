@@ -6,12 +6,15 @@ import numpy as np
 import torch
 from tqdm import tqdm
 import torch.utils.data as data
+import math
 
 train_ds = dataloader.train_ds
 n_samples = len(train_ds)
+batch_size = 7
+iters = math.floor(n_samples/batch_size)
 print(n_samples)
 #LOAD DATA
-train_dl = data.DataLoader(train_ds, batch_size = 2, shuffle=True)
+train_dl = data.DataLoader(train_ds, batch_size = batch_size, shuffle=False)
 
 
 total_pixels = 0
@@ -19,21 +22,20 @@ white_pixels = 0
 frequencies = []
 mean_pic = torch.zeros((64,64))
 for i,batch in enumerate(tqdm(train_dl)):
-    chunks, labels, tasks, id = batch
-    lab1,lab2 = labels
-    id1,id2 = id
-    id1 = int(id1)
-    id2 = int(id2)
+    _, labels, _, id = batch
+    
     #print(id1,id2)
-    total_pixels += 64*64*2
-    white_pixels += torch.sum(lab1) + torch.sum(lab2)
-    mean_pic += lab1 + lab2
+    ttp = 64*64*labels.shape[0]
+    total_pixels += ttp
+    twp = torch.sum(labels)
+    white_pixels += twp.item()
+    mean_pic = torch.add(mean_pic,torch.sum(labels,dim=0))
     
     #print(dataloader.dataset['object'][id1])
     #print(dataloader.dataset['object'][id2])
     #print(torch.max(lab1),torch.max(lab2))
-    frequencies.append(((torch.sum(lab1) + torch.sum(lab2))/(64*64*2)).item())
-    if(i > 5000):
+    frequencies.append(twp/ttp)
+    if(i == len(train_dl)-2):
         break
 
 # Plot an histogram of the frequencies

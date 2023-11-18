@@ -5,6 +5,7 @@ from torch.nn import functional as F
 import torch.utils.checkpoint as cp
 import math
 import matplotlib.pyplot as plt 
+from positional_encodings.torch_encodings import PositionalEncodingPermute1D
 
 class FReLU(nn.Module):
     r""" FReLU formulation. The funnel condition has a window size of kxk. (k=3 by default)
@@ -63,8 +64,13 @@ class Net(torch.nn.Module):
         self.pooling1 = torch.nn.AvgPool2d(kernel_size=2, stride=2)
         self.pooling2 = torch.nn.AvgPool2d(kernel_size=12, stride=12)
         self.pooling3 = torch.nn.AvgPool2d(kernel_size=24, stride=24)
-
+        self.decoding_layer = torch.nn.Conv3d(1,1, kernel_size = (15,21,21), stride = (1,1,1), padding = (0,10,10)).to(self.device)
+        self.decoding_layer_macro = torch.nn.Conv3d(1,1, kernel_size = (19,63,63), stride = (1,1,1), padding = (0,31,31)).to(self.device)
+        self.normalization = torch.nn.BatchNorm2d(1)
         self.final_activation = torch.nn.Sigmoid()
+        self.logit = nn.Conv2d(64, 1, 1, 1, 0)
+        self.dropout1 = nn.Dropout(0.25)
+        self.dropout2 = nn.Dropout(0.1)
         #self.condensing2 = torch.nn.Conv2d(64*4,1, kernel_size=25, stride=1)
 
     def one_hot_task_embedding(self, task_id):
@@ -79,25 +85,51 @@ class Net(torch.nn.Module):
         task_emb = self.one_hot_task_embedding(t)
 
         # encoding
+        x = self.dropout1(x)
         x, x_skip1 = self.encoder_block1(x, task_emb)
         x, x_skip2 = self.encoder_block2(x, task_emb)
+        #x = self.dropout(x)
         x, x_skip3 = self.encoder_block3(x, task_emb)
         x, x_skip4 = self.encoder_block4(x, task_emb)
-
+        #x = self.dropout(x)
         # bottle
         x = self.bottle_block(x, task_emb)
 
         # decoding
+        #x = self.dropout(x)
         x = self.decoder_block4(x, x_skip4, task_emb)
         x = self.decoder_block3(x, x_skip3, task_emb)
+        #x = self.dropout(x)
         x = self.decoder_block2(x, x_skip2, task_emb)
         x = self.decoder_block1(x, x_skip1, task_emb)
         outputs = self.conv_out(x, task_emb)
+        outputs = self.dropout2(outputs)
         #print(outputs.shape)
         # Squeeze to 2D
         outputs = outputs.squeeze(1)
         #outputs = torch.mean(outputs, dim=1).unsqueeze(1)
-        
+         # [N, 64, 64, 64] 
+        outputs = self.logit(outputs)
+        # First reshape the output to [N, 64, 64, 64] -> [N, 64, 64*64]
+        #in_pos_encoding = outputs.reshape(outputs.shape[0], 64, 64*64)
+        # Use positional encoding instead
+        #positional_encoding = PositionalEncodingPermute1D(in_pos_encoding.shape[1])
+        # Dim 1 cause dim0 is the batch, we want to collapse Z which is dim1
+        #weights = positional_encoding(in_pos_encoding)
+        '''
+        #decoding_layer = torch.nn.Conv3d(1,1, kernel_size = (15,21,21), stride = (1,1,1), padding = (0,10,10)).to(self.device)
+        outputs = self.decoding_layer(outputs.unsqueeze(1))
+        # Remove the first dimension
+        outputs = outputs
+        # Sum all the Z layers
+        outputs = torch.sum(outputs, dim=2)
+        # Normalize the output
+        outputs = self.normalization(outputs)
+        # Shape [N, 1, 64, 64]
+        outputs = self.final_activation(outputs)
+        '''
+
+        '''
         outputs_scale_1 = self.condensing1(outputs)
         # [N, 64, 64, 64] -> [N, 1, 64, 64]
         outputs_scale_1 = self.pooling1(outputs_scale_1)
@@ -113,9 +145,11 @@ class Net(torch.nn.Module):
         outputs = torch.mean(torch.stack([outputs_scale_1, outputs_scale_2, outputs_scale_3], dim=1), 1)
         
         outputs = self.final_activation(outputs)
+        '''
         #print(outputs.shape)
         #outputs = outputs.squeeze(-1).squeeze(-1).reshape(outputs.shape[0],1,64,64)
         #print(outputs.shape)
+        
         return outputs
 
 
