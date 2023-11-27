@@ -3,12 +3,17 @@ from torch.nn import functional as F
 import numpy as np
 import matplotlib.pyplot as plt
 import segmentation_models_pytorch as smp
-
+from piq import SSIMLoss
 
 dice_loss = smp.losses.DiceLoss(mode='binary')
 softBCE = smp.losses.SoftBCEWithLogitsLoss(smooth_factor=0.25)
-loss_func = lambda x,y:0.5 * dice_loss(x,y)+0.5*softBCE(x,y)
+focal_loss = smp.losses.FocalLoss(mode='binary', alpha = 0.3, gamma = 2.0)
+#loss_func = lambda x,y:0.5 * dice_loss(x,y)+0.5*softBCE(x,y)
+loss_func = lambda x,y: (focal_loss(x,y) + dice_loss(x,y) + softBCE(x,y))/3
 
+mse_loss = torch.nn.MSELoss(reduction='mean')
+ssim_loss = SSIMLoss()
+mateo_loss = lambda x,y: (mse_loss(x,y) + ssim_loss(x.clip(0,1),y))
 
 '''
 

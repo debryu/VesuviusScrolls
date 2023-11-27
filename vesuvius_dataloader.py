@@ -14,6 +14,7 @@ import time
 import gc
 import cv2 as cv
 from utils.dataloader_fn import create_edge_mask, extract_training_points, normalize_training_points, extract_random_points, extract_training_and_val_points
+from utils.augmentations import *
 
 FROM = 0
 WINDOW = 32
@@ -28,19 +29,21 @@ BATCH_SIZE_EVAL = 2
 SCAN_DEPTH = 2*WINDOW + ODD_WINDOW
 SCAN_TO_LOAD = f"scan_1_{FROM}d{SCAN_DEPTH}.pt"
 EVAL_WINDOW = 640 + 64*4 # Must be multiple of 64
-base_folder = 'G:/VS_CODE/CV/Vesuvius Challenge/' #"G:/VS_CODE/CV/Vesuvius Challenge/"
+base_folder = 'C:/Users/debryu/Desktop/VS_CODE/HOME/CV/Vesuvius_ds/complete dataset/' #"G:/VS_CODE/CV/Vesuvius Challenge/"
+obf = "G:/VS_CODE/CV/Vesuvius Challenge/"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 datasets = ["Normal", "Infrared"]
 
 ###############################################################################
 #Get the size of each fragment and get the fragments from storage
-names = os.listdir(base_folder+'Fragments_dataset/numpy/')
+names = os.listdir(base_folder)
+frag_names = [name for name in names if name.endswith('.npy')]
 dataset_names = {}
 fragments=[]
-for i,n in enumerate(names):
+for i,n in enumerate(frag_names):
     dataset_names[i] = n
     size = tuple(map(int, n.split('_')[1].split('.')[0].split('-')))
-    temp = np.memmap(base_folder+'Fragments_dataset/numpy/'+n, dtype=np.float32, mode='r', shape=size)
+    temp = np.memmap(base_folder+n, dtype=np.float32, mode='r', shape=size)
     fragments.append(temp)
 ###############################################################################
 
@@ -49,26 +52,26 @@ DEFINE MANUALLY ALL THE LABEL FILES
 
 '''
 
-FRAG1_MASK = np.array(Image.open( base_folder + f"Fragments/Frag1/mask.png").convert('1'))
-FRAG2_MASKa = np.array(Image.open( base_folder + f"Fragments/Frag2/part1_mask.png").convert('1'))
-FRAG2_MASKb = np.array(Image.open( base_folder + f"Fragments/Frag2/part2_mask.png").convert('1'))
-FRAG3_MASK = np.array(Image.open( base_folder + f"Fragments/Frag3/mask.png").convert('1'))
-FRAG4_MASK = np.array(Image.open( base_folder + f"Fragments/Frag4/mask.png").convert('1'))
-FRAG1_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag1/inklabels.png")
-FRAG2_LABEL_PNGa = Image.open(base_folder + f"Fragments/Frag2/part1_inklabels.png")
-FRAG2_LABEL_PNGb = Image.open(base_folder + f"Fragments/Frag2/part2_inklabels.png")
-FRAG3_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag3/inklabels.png")
-FRAG4_LABEL_PNG = Image.open(base_folder + f"Fragments/Frag4/inklabels.png")
+FRAG1_MASK = np.array(Image.open( base_folder + f"f1_mask.png").convert('1'))
+FRAG2_MASKa = np.array(Image.open( base_folder + f"f2a_mask.png").convert('1'))
+FRAG2_MASKb = np.array(Image.open( base_folder + f"f2b_mask.png").convert('1'))
+FRAG3_MASK = np.array(Image.open( base_folder + f"f3_mask.png").convert('1'))
+FRAG4_MASK = np.array(Image.open( base_folder + f"f4_mask.png").convert('1'))
+FRAG1_LABEL_PNG = Image.open(base_folder + f"f1_inklabels.png")
+FRAG2_LABEL_PNGa = Image.open(base_folder + f"f2a_inklabels.png")
+FRAG2_LABEL_PNGb = Image.open(base_folder + f"f2b_inklabels.png")
+FRAG3_LABEL_PNG = Image.open(base_folder + f"f3_inklabels.png")
+FRAG4_LABEL_PNG = Image.open(base_folder + f"f4_inklabels.png")
 FRAG1_LABEL = torch.from_numpy(np.array(FRAG1_LABEL_PNG))
 FRAG2_LABELa = torch.from_numpy(np.array(FRAG2_LABEL_PNGa))
 FRAG2_LABELb = torch.from_numpy(np.array(FRAG2_LABEL_PNGb))
 FRAG3_LABEL = torch.from_numpy(np.array(FRAG3_LABEL_PNG))
 FRAG4_LABEL = torch.from_numpy(np.array(FRAG4_LABEL_PNG))
-FRAG1_EDGES_LABEL, FRAG1_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragments/Frag1/inklabels.png")
-FRAG2_EDGES_LABELa, FRAG2_EDGES_LABEL_PTa = create_edge_mask(base_folder + f"Fragments/Frag2/part1_inklabels.png")
-FRAG2_EDGES_LABELb, FRAG2_EDGES_LABEL_PTb = create_edge_mask(base_folder + f"Fragments/Frag2/part2_inklabels.png")
-FRAG3_EDGES_LABEL, FRAG3_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragments/Frag3/inklabels.png")
-FRAG4_EDGES_LABEL, FRAG4_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragments/Frag4/inklabels.png")
+FRAG1_EDGES_LABEL, FRAG1_EDGES_LABEL_PT = create_edge_mask(base_folder + f"f1_inklabels.png")
+FRAG2_EDGES_LABELa, FRAG2_EDGES_LABEL_PTa = create_edge_mask(base_folder + f"f2a_inklabels.png")
+FRAG2_EDGES_LABELb, FRAG2_EDGES_LABEL_PTb = create_edge_mask(base_folder + f"f2b_inklabels.png")
+FRAG3_EDGES_LABEL, FRAG3_EDGES_LABEL_PT = create_edge_mask(base_folder + f"f3_inklabels.png")
+FRAG4_EDGES_LABEL, FRAG4_EDGES_LABEL_PT = create_edge_mask(base_folder + f"f4_inklabels.png")
 '''
 -------------------------------------------------------------------------------------------------------------------
 '''
@@ -77,7 +80,7 @@ FRAG4_EDGES_LABEL, FRAG4_EDGES_LABEL_PT = create_edge_mask(base_folder + f"Fragm
 #plt.show()
 
 # Get the label as an image
-label_as_img = Image.open(base_folder + f"Fragments/Frag1/inklabels.png")
+label_as_img = Image.open(obf + f"Fragments/Frag1/inklabels.png")
 
 # Crop the rectangle from the original image
 #(1175,3602,63,63)
@@ -85,7 +88,7 @@ print("Evaluation window: ", EVAL_WINDOW)
 val_label = label_as_img.crop((1175, 3602, 1175+EVAL_WINDOW, 3602+EVAL_WINDOW))
 
 # Save the cropped image
-val_label.save(base_folder + 'Fragments/Frag1/label.png')#"g:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/previews/label.png")
+val_label.save(obf + 'Fragments/Frag1/label.png')#"g:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/previews/label.png")
 
 
 
@@ -157,13 +160,14 @@ hpp_F2a_BLACK = [
     (3480,3384),
 ]
 
-black_squaresf102 = np.load(base_folder + 'Fragments_dataset/special_dataset/black02/black_coords_f1.npy')
-black_squaresf2a01 = np.load(base_folder + 'Fragments_dataset/special_dataset/black01/black_coords_f2a.npy')
-black_squaresf301_more = np.load(base_folder + 'Fragments_dataset/special_dataset/black01/black_coords_f3.npy') 
+black_squaresf102 = np.load(obf + 'Fragments_dataset/special_dataset/black02/black_coords_f1.npy')
+black_squaresf2a01 = np.load(obf + 'Fragments_dataset/special_dataset/black01/black_coords_f2a.npy')
+black_squaresf301_more = np.load(obf + 'Fragments_dataset/special_dataset/black01/black_coords_f3.npy') 
 
 
 
 step = 64
+allBlack_step = 4
 # Concatenate coordinates
 all_coordinates = np.concatenate([training_points_1[0::step], 
                                   training_points_2a[0::step], 
@@ -178,9 +182,9 @@ all_coordinates = np.concatenate([training_points_1[0::step],
                                   #random_points_2b,
                                   #random_points_3,
                                   #random_points_4,
-                                  black_squaresf102[0::2],
-                                  black_squaresf2a01[0::2],
-                                  black_squaresf301_more[0::2],
+                                  black_squaresf102[0::allBlack_step],
+                                  black_squaresf2a01[0::allBlack_step],
+                                  black_squaresf301_more[0::allBlack_step],
                                   ])
 
 print(len(training_points_1[0::step]))
@@ -215,9 +219,9 @@ class_labels = np.array(  [0] * len(training_points_1[0::step])
                         #+ [2] * len(random_points_2b)
                         #+ [3] * len(random_points_3)   
                         #+ [4] * len(random_points_4)   
-                        + [0] * len(black_squaresf102[0::2])
-                        + [1] * len(black_squaresf2a01[0::2])
-                        + [3] * len(black_squaresf301_more[0::2])                                                                                                                                                                                                                                             
+                        + [0] * len(black_squaresf102[0::allBlack_step])
+                        + [1] * len(black_squaresf2a01[0::allBlack_step])
+                        + [3] * len(black_squaresf301_more[0::allBlack_step])                                                                                                                                                                                                                                             
                        )
 # Store all the labels
 all_labels = [FRAG1_LABEL, FRAG2_LABELa, FRAG2_LABELb, FRAG3_LABEL, FRAG4_LABEL]
@@ -229,10 +233,8 @@ all_coordinates = np.concatenate([training_points_3[0::64]])
 class_labels = np.array([0] * len(training_points_3[0::64]))
 all_labels = [FRAG3_LABEL]
 '''
-
-
-class SubvolumeDataset(data.Dataset):
-    def __init__(self, surfaces, labels, class_labels, coordinates,task = 0):
+class SubvolumeDatasetEval(data.Dataset):
+    def __init__(self, surfaces, labels, class_labels, coordinates,task = None):
         self.surfaces = surfaces
         self.labels = labels
         self.class_labels = class_labels
@@ -244,6 +246,37 @@ class SubvolumeDataset(data.Dataset):
         #print(self.coordinates)
         return len(self.coordinates)
     def __getitem__(self, index):
+        task = 0
+        scroll_id = self.class_labels[index]
+        label = self.labels[scroll_id]
+        image_stack = self.surfaces[scroll_id]
+        y, x = self.coordinates[index]
+        subvolume = image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
+        inkpatch = label[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
+        inkpatch = inkpatch.numpy().astype(np.uint8)
+        #subvolume = torch.tensor(subvolume)
+        #print(torch.max(subvolume), torch.min(subvolume))
+        #jhgfjh
+        data = valid_transformations(image = subvolume, mask = inkpatch)
+        subvolume = data['image'].unsqueeze(0)
+        inkpatch = data['mask']
+        #subvolume = subvolume.view(1, SCAN_DEPTH, WINDOW*2+ODD_WINDOW, WINDOW*2+ODD_WINDOW)
+        return subvolume, inkpatch, task, scroll_id
+
+class SubvolumeDataset(data.Dataset):
+    def __init__(self, surfaces, labels, class_labels, coordinates,task = None):
+        self.surfaces = surfaces
+        self.labels = labels
+        self.class_labels = class_labels
+        self.coordinates = coordinates
+        self.task = task
+        self.epoch = 0
+        self.masks = []
+    def __len__(self):
+        #print(self.coordinates)
+        return len(self.coordinates)
+    def __getitem__(self, index):
+        task = 0
         scroll_id = self.class_labels[index]
         #print(index)
         #print(scroll_id)
@@ -256,22 +289,37 @@ class SubvolumeDataset(data.Dataset):
         #print(y, x)
         #print(self.image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW].shape)
         
-        if self.epoch > 10:
-            # Get random points from the image
-            a = 10
 
         subvolume = image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
-        subvolume = torch.tensor(subvolume)
-        subvolume = subvolume.view(1, SCAN_DEPTH, WINDOW*2+ODD_WINDOW, WINDOW*2+ODD_WINDOW)
-        
-        inklabel = label[y, x].view(1)
         inkpatch = label[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
+        inkpatch = inkpatch.numpy().astype(np.uint8)
+        #Add augmentations
+        data = train_transformations(image = subvolume, mask = inkpatch)
+        subvolume = data['image'].unsqueeze(0)
+        #print(subvolume.shape)
+        inkpatch = data['mask']
+        
+        #subvolume = torch.tensor(subvolume)
+        #subvolume = subvolume.view(1, SCAN_DEPTH, WINDOW*2+ODD_WINDOW, WINDOW*2+ODD_WINDOW)
+        #inklabel = label[y, x].view(1)
+        #inkpatch = label[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
        
+        '''
+        # Generate a random value from 0 to 1
+        rand = np.random.rand()
+        if self.task == None:
+            if rand > 0.5:
+                task = 1
+                inkpatch = inkpatch*-1 + 1
+            else:
+                task = 0
+        else:
+            task = self.task
         #print(inkpatch)
         #print(current_task)
         #plt.imshow(inkpatch.cpu().numpy())
         #plt.show()
-        
+        '''
         # Flipping
         '''
         if rand > 0.5:
@@ -284,15 +332,17 @@ class SubvolumeDataset(data.Dataset):
             #print(inkpatch.shape)
         '''
         #print(inkpatch.shape)
-        return subvolume, inkpatch, self.task, scroll_id
+        return subvolume, inkpatch, task, scroll_id
         #return subvolume, inklabel, self.task
 
 
 
 train_ds = SubvolumeDataset(fragments, all_labels, class_labels, all_coordinates)
+train_sanity_check = SubvolumeDatasetEval(fragments, all_labels, class_labels[[8,10,24,28]], all_coordinates[[8,10,24,28]])
+print('sanity ch',len(train_sanity_check))
 total_train_iters = len(all_coordinates)
 #print(validation_points_1)
-validation_frag1 = SubvolumeDataset(fragments, all_labels, np.array([0] * len(validation_points_1)), validation_points_1,0)
+validation_frag1 = SubvolumeDatasetEval(fragments, all_labels, np.array([0] * len(validation_points_1)), validation_points_1, task=0)
 total_val_iters = len(validation_points_1)
 
 

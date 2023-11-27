@@ -34,11 +34,11 @@ class GradualWarmupSchedulerV2(GradualWarmupScheduler):
             return [base_lr * ((self.multiplier - 1.) * self.last_epoch / self.total_epoch + 1.) for base_lr in self.base_lrs]
 
 
-def get_scheduler(optimizer):
+def get_scheduler(optimizer, multiplier=1.0, warmup_epoch = 1, cosine_epoch=10):
     scheduler_cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, 10, eta_min=1e-7)
+        optimizer, cosine_epoch, eta_min=1e-7)
     scheduler = GradualWarmupSchedulerV2(
-        optimizer, multiplier=1.0, total_epoch=3, after_scheduler=scheduler_cosine)
+        optimizer, multiplier=multiplier, total_epoch=warmup_epoch, after_scheduler=scheduler_cosine)
 
     return scheduler
 

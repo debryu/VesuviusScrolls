@@ -69,8 +69,8 @@ class Net(torch.nn.Module):
         self.normalization = torch.nn.BatchNorm2d(1)
         self.final_activation = torch.nn.Sigmoid()
         self.logit = nn.Conv2d(64, 1, 1, 1, 0)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.1)
+        self.dropout1 = nn.Dropout(0.15)
+        self.dropout2 = nn.Dropout(0.05)
         #self.condensing2 = torch.nn.Conv2d(64*4,1, kernel_size=25, stride=1)
 
     def one_hot_task_embedding(self, task_id):
@@ -85,12 +85,13 @@ class Net(torch.nn.Module):
         task_emb = self.one_hot_task_embedding(t)
 
         # encoding
-        x = self.dropout1(x)
+        #x = self.dropout1(x)
         x, x_skip1 = self.encoder_block1(x, task_emb)
         x, x_skip2 = self.encoder_block2(x, task_emb)
         #x = self.dropout(x)
         x, x_skip3 = self.encoder_block3(x, task_emb)
         x, x_skip4 = self.encoder_block4(x, task_emb)
+        #print(x.shape,x_skip4.shape)
         #x = self.dropout(x)
         # bottle
         x = self.bottle_block(x, task_emb)
@@ -103,7 +104,7 @@ class Net(torch.nn.Module):
         x = self.decoder_block2(x, x_skip2, task_emb)
         x = self.decoder_block1(x, x_skip1, task_emb)
         outputs = self.conv_out(x, task_emb)
-        outputs = self.dropout2(outputs)
+        #outputs = self.dropout2(outputs)
         #print(outputs.shape)
         # Squeeze to 2D
         outputs = outputs.squeeze(1)
