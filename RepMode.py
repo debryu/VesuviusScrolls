@@ -42,9 +42,9 @@ class Net(torch.nn.Module):
         self.conv_out = MoDEConv(self.num_experts, self.num_tasks, self.mult_chan, self.out_channels, kernel_size=5, padding='same', conv_type='final')
         
         #out proc
-        self.c2d = nn.Sequential(nn.InstanceNorm2d(1, affine=True),
-                                 nn.Mish(inplace=True),
-                                 nn.Conv2d(1, 1, 3,stride=1,padding=1,padding_mode='reflect'),
+        self.c2d = nn.Sequential(#nn.InstanceNorm2d(64, affine=True),
+                                 #nn.Mish(inplace=True),
+                                 nn.Conv2d(64, 1, 3,stride=1,padding=1,padding_mode='reflect'),
                                  #RRDB(nf=1,gc=128),
                                  #RRDB(nf=32,gc=128),
                                  #RRDB(nf=32,gc=128),
@@ -52,10 +52,11 @@ class Net(torch.nn.Module):
                                  #nn.Mish(inplace=True),
                                  #nn.Conv2d(32, 1, 3,stride=1,padding=1,padding_mode='reflect'),
                                  )
-        self.c3d64 = nn.Sequential(nn.Conv3d(256, 128, 3, stride=1,padding=1,padding_mode='reflect'),
+        self.c3d64 = nn.Sequential(nn.Conv3d(512, 1, 3, stride=1,padding=1,padding_mode='reflect'),
                                  #nn.InstanceNorm3d(128, affine=True),
                                  #nn.Mish(inplace=True),
-                                 nn.Conv3d(128, 1, 3, stride=1,padding=1,padding_mode='reflect'),)
+                                 #nn.Conv3d(256, 1, 3, stride=1,padding=1,padding_mode='reflect'),
+                                 )
         
         # self.c1d = nn.Sequential(nn.InstanceNorm2d(64, affine=True),
         #                          nn.Mish(inplace=True),
@@ -73,16 +74,22 @@ class Net(torch.nn.Module):
         
         self.c128 = nn.AvgPool2d(2)
         
-        self.rrdb = RRDB_3D(32, 128)
+        self.rrdb = RRDB_3D(512, 256)
+        
+        self.zcomp = nn.Conv2d(64, 64, 3,stride=2,padding=1,padding_mode='reflect')
         
         self.optimus = nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=8, activation='gelu',batch_first=True),
                                              num_layers=2)
         
-        self.prime = nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=4096, nhead=8, activation='gelu',batch_first=True),
-                                           num_layers=2)
+        self.prime = nn.Sequential(#nn.InstanceNorm1d(4096, affine=True),
+                                  #nn.Mish(inplace=True),
+                                   nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=8, activation='gelu',batch_first=True),
+                                            num_layers=16))
         
         self.bumble = nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=4096, nhead=8, activation='gelu',batch_first=True),
-                                             num_layers=2)
+                                              num_layers=2)
+        
+        self.lin = nn.Linear(4096, 64)
 
     def one_hot_task_embedding(self, task_id):
         N = task_id.shape[0]
@@ -91,14 +98,14 @@ class Net(torch.nn.Module):
             task_embedding[i, task_id[i]] = 1
         return task_embedding.to(self.device)
 
-    def forward(self, x, t):
+    def forward(self, xin, t):
         # task embedding
         task_emb = self.one_hot_task_embedding(t)
         
-        x = self.bumble(x.reshape([-1,1,64,4096]).squeeze(1)).reshape([-1,64,64,64]).unsqueeze(1)
+        #x = self.bumble(x.reshape([-1,1,64,4096]).squeeze(1)).reshape([-1,64,64,64]).unsqueeze(1)
         
         # encoding [b,1,64,64,64]
-        x, x_skip1 = self.encoder_block1(x, task_emb) #[b,16,32,32,32]
+        x, x_skip1 = self.encoder_block1(xin, task_emb) #[b,16,32,32,32]
         x, x_skip2 = self.encoder_block2(x, task_emb) #[b,32,16,16,16]
         #x = self.rrdb(x)
         x, x_skip3 = self.encoder_block3(x, task_emb) #[b,64,8,8,8]
@@ -107,7 +114,9 @@ class Net(torch.nn.Module):
 
         # bottle
         xb = self.bottle_block(x, task_emb) #[batch,256,4,4,4]
-        #x = self.prime(xb.reshape([-1,256,64])).reshape([-1,256,4,4,4])
+        
+        #xb = self.rrdb(xb)
+        #xb = self.prime(xb.reshape([-1,512,64])).reshape([-1,512,4,4,4])
 
         # decoding
         x = self.decoder_block4(xb, x_skip4, task_emb) #[b,128,8,8,8]
@@ -115,29 +124,51 @@ class Net(torch.nn.Module):
         x = self.decoder_block2(x, x_skip2, task_emb) #[b,32,32,32,32]
         #x = self.rrdb(x)
         x = self.decoder_block1(x, x_skip1, task_emb) #[b,16,64,64,64]
-        x = self.conv_out(x, task_emb) #[b,1,64,64,64]
+        x = self.conv_out(x, task_emb).squeeze(1) #[b,64,64,64]
         
-        x = self.c1d(x.squeeze(1)).unsqueeze(1) #[b,1,64,64,64]
+        #x = self.c1d(x.squeeze(1)).unsqueeze(1) #[b,1,64,64,64]
         
         #Collapse the z axis
-        xb = self.c3d64(xb) #[batch,1,4,4,4] || [b,1,4,8,8]
+        # xb = self.c3d64(xb) #[batch,1,4,4,4] || [b,1,4,8,8]
         #xb = self.c128(xb.squeeze(1)).unsqueeze(1) #[b,1,4,4,4]
         
-        xb = torch.reshape(xb,[-1,1,xb.shape[-1]**3]) #[b,1,64]
-        xb = self.optimus(xb)
-        xb = xb.squeeze(1) 
+        # xb = torch.reshape(xb,[-1,1,xb.shape[-1]**3]) #[b,1,64]
+        #xb = self.optimus(xb)
+        # xb = xb.squeeze(1) 
+        # xb = self.lin(xb)
         
-        x = x.permute([0,1,3,4,2]) #move z axis last
-        temp = []
-        for i,s in enumerate(xb): #[8,64]
-            temp.append(torch.matmul(x[i,0,:,:,:],s)) #[64,64,64] x [64] = [64,64]
-        x = torch.stack(temp).unsqueeze(1)
+        #xa = self.prime(xin.squeeze(1).permute([0,2,3,1]).reshape([-1,4096,64])).reshape([-1,64,64,64]).permute([0,3,1,2])
+        
+        # z = F.adaptive_avg_pool1d(z.permute(0, 2, 1), (1,)).view(-1,64)
+        
+        
+        # xa = x.permute([0,2,3,1]) #move z axis last
+        # temp = []
+        # for i,s in enumerate(z): #[8,64]
+        #     temp.append(torch.matmul(xa[i,:,:,:],s)) #[64,64,64] x [64] = [64,64]
+        # xa = torch.stack(temp).unsqueeze(1)
         
         x = self.c2d(x)
         
-        x = self.prime(x.reshape([-1,1,4096]).squeeze(1)).reshape([-1,64,64]).unsqueeze(1)
+        # x = self.prime(x.reshape([-1,1,4096]).squeeze(1)).reshape([-1,64,64]).unsqueeze(1)
         
         #return outputs#F.sigmoid(outputs)
+        
+        #x = x.permute([0,2,3,1]) #comp x
+        #z = self.c2d(x.permute([0,2,3,1])) #comp x
+        #z = self.zcomp(z.permute([0,2,3,1])) #comp y
+        #[b,y,z,x] -> [b,z]
+        #z = z.squeeze(1).squeeze(-1)
+        
+        #x = x.permute([0,2,3,1]) #move z axis last
+        #temp = []
+        #for i,s in enumerate(z): #[8,64]
+        #    temp.append(torch.matmul(x[i,:,:,:],s)) #[64,64,64] x [64] = [64,64]
+        #x = torch.stack(temp).unsqueeze(1)
+        
+        
+
+        
         return x.clip(0,1)
 
 
@@ -149,7 +180,7 @@ class MoDEEncoderBlock(torch.nn.Module):
         self.conv_more = MoDESubNet2Conv(num_experts, num_tasks, in_chan, out_chan)
         self.conv_down = torch.nn.Sequential(
             torch.nn.Conv3d(out_chan, out_chan, kernel_size=2, stride=2, bias=False),
-            nn.InstanceNorm3d(out_chan, affine=True),#torch.nn.BatchNorm3d(out_chan),
+            nn.BatchNorm3d(out_chan, affine=True),#torch.nn.BatchNorm3d(out_chan),
             torch.nn.Mish(inplace=True),
         )
 
@@ -266,13 +297,13 @@ class MoDEConv(torch.nn.Module):
 
     def forward(self, x, t):
 
-        N = x.shape[0]
+        N = x.shape[0] #batch size
 
-        g = self.gate(t)
-        g = g.view((N, self.num_experts, self.out_chan))
+        g = self.gate(t) #[b, x out channels * experts]
+        g = g.view((N, self.num_experts, self.out_chan)) #[b,experts,x out channels]
         g = self.softmax(g)
 
-        w = self.routing(g, N)
+        w = self.routing(g, N) #[b,x out chann, 1, 5,5,5] mix expert kernels
 
         if self.training:
             y = list()

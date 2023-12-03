@@ -17,8 +17,9 @@ import wandb
 from piq import SSIMLoss, ssim
 from PIL import Image
 import numpy as np
-from chunkDS import reconstruct_image
+from chunkDS import reconstruct_image,rolling,flipping,jitter
 import matplotlib.pyplot as plt
+import random
 
 
 path = 'D:/Universidades/Trento/3S/AdvCV/CSTMRepMode/'
@@ -26,14 +27,13 @@ class Options:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 opts = Options(
-    path_exp_dir='exps/test',
     gpu_ids=[0],
-    path_load_dataset='data/all_data',
     num_epochs=50,
     batch_size=8,#dataloader.BATCH_SIZE,
-    lr=1e-6,
+    lr=1e-3,
     numit = 200,
-    criterion=nn.MSELoss(),
+    gradac = 8, #8*8 = 64
+    criterion=[nn.L1Loss(), nn.MSELoss(), SSIMLoss()],
     device='cuda',
     gclip = 1,
     interval_val=2,
@@ -77,18 +77,21 @@ if True:
     valid_dl = DataLoader(valid_ds, batch_size=opts.batch_size, shuffle=False, pin_memory=True)
     
     #LOAD MODEL
-    model = Net(opts, mult_chan=16).to(opts.device)
-    if opts.path_load_model is not None and os.path.exists(opts.path_load_model):
-        model.load_state(opts.path_load_model)
+    model = Net(opts, mult_chan=32).to(opts.device)
+    #model.load_state_dict(torch.load(path+'epochs/E50.pth'))
     
     #DEFINE OPTIMIZER
     optimizer = torch.optim.AdamW(model.parameters(), lr=opts.lr)
     scaler = GradScaler()
     #scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer,5)
-    #ReduceLROnPlateau(optimizer, 'min')
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,
+                                                           mode='min',
+                                                           factor=0.5,
+                                                           patience=3,
+                                                           verbose=True)
     #INIT WANDB
     if WANDB:
-        wandb.init(name='R2',project="SSP", entity="unitnais")
+        wandb.init(name='R5',project="SSP", entity="unitnais")
         config = {
             "learning_rate": opts.lr,
             "batch_size": opts.batch_size,
@@ -100,7 +103,7 @@ if True:
     #TRAIN & EVAL LOOP
     l2 = nn.MSELoss()#reduction='sum')
     l1 = nn.L1Loss()#reduction='sum')
-    #model.load_state_dict(torch.load(path+'epochs/E50.pth'))
+    
     
     def vfragcheck(tg,tl,lbl,lblname='T'):
         grid_array = reconstruct_image(tl)
@@ -137,10 +140,12 @@ if True:
         model.train()
         for i,data in enumerate(tqdm(train_dl, total=int(len(train_ds)/train_dl.batch_size))):
             signal, target, task = data['chunk'], data['tlbl'], data['task']
-            signal = signal.to(opts.device)
-            target = target.to(opts.device).to(torch.float)
+            signal = signal.to(opts.device) #[b,1,64,64,64]
+            target = target.to(opts.device).to(torch.float) #[b,64,64]
             task = task.to(opts.device)
             
+#            rdm=random.randint(0,1)
+
             optimizer.zero_grad()
             with autocast():
                 outputs = model(signal,task)
@@ -148,19 +153,24 @@ if True:
                 
                 target = target.clip(0.1,0.9)
                 
-                loss = opts.criterion(outputs, target)
-                #loss = loss + l2(outputs, target)#*l1(outputs, target) + (0.9 - torch.max(outputs))**2 + (0.1 - torch.min(outputs))**2
+                loss = opts.criterion[1](outputs, target)
+                #loss = loss + l2(outputs,target)#torch.pow(loss*l2(outputs, target)*l1(outputs, target),1/3)
+            
+                if WANDB: #and i%10==0:
+                    wandb.log({'tloss': loss, 'lr': optimizer.param_groups[0]['lr']})#scheduler.get_last_lr()[0]})    
+                t_loss +=loss.item()
+            
+                # Normalize the Gradients
+                loss = loss / opts.gradac    
+                scaler.scale(loss).backward()
                 
-            if WANDB:
-                wandb.log({'tloss': loss})#, 'lr': scheduler.get_last_lr()[0]})
-                
-            scaler.scale(loss).backward()
-            nn.utils.clip_grad_norm_(model.parameters(), opts.gclip)
-            scaler.step(optimizer)
-            scaler.update()
+            if (i+1)%opts.gradac == 0 or i == opts.numit-1:#(i+1) == len(train_dl):  
+                nn.utils.clip_grad_norm_(model.parameters(), opts.gclip)
+                scaler.step(optimizer)
+                scaler.update()
             #scheduler.step(epoch + i / opts.numit)
     
-            t_loss +=loss.item()
+            
             #break
             if i == opts.numit-1:
                 break
@@ -186,8 +196,8 @@ if True:
                 
                 target = target.clip(0.1,0.9)
                 
-                loss = opts.criterion(outputs, target) 
-                #loss = loss + l2(outputs, target) #*l1(outputs, target) + (0.9 - torch.max(outputs))**2 + (0.1 - torch.min(outputs))**2
+                loss = opts.criterion[1](outputs, target) 
+                #loss = loss + l2(outputs,target)#torch.pow(loss*l2(outputs, target)*l1(outputs, target),1/3)
                 
                 #outputs = outputs.clip(0,1)
                 
@@ -203,7 +213,9 @@ if True:
             pssim0, pred0 = vfragcheck(tg, tl, lbl)
             print('\t\tLoss:',round(v_loss0/len(valid_ds),6), 'SSIM', round(pssim0.item(),4))
             
-            #RUN on IR lables
+            scheduler.step(v_loss0)
+            
+            # RUN on IR lables
             # tl = []
             # if tgir:
             #     lbl=[]
@@ -219,7 +231,7 @@ if True:
                 
             #     target = target.clip(0.1,0.9)
                 
-            #     loss = opts.criterion(outputs, target) 
+            #     loss = opts.criterion[1](outputs, target) 
             #     #loss = loss + l2(outputs, target) #*l1(outputs, target) + (0.9 - torch.max(outputs))**2 + (0.1 - torch.min(outputs))**2
                 
             #     v_loss1 +=loss.item()
@@ -235,11 +247,13 @@ if True:
             # print('\t\tLoss:',round(v_loss1/len(valid_ds),6), 'SSIM', round(pssim1.item(),4))
             
         if WANDB:
-            #if wimg:
-                # images = wandb.Image(np.vstack((pred0,pred1)), caption="Top: Mask, Bottom: IR")
-                # wandb.log({"Pred": images})
-            #wandb.log({'Tloss': t_loss, 'Vloss': v_loss0, 'Vloss_ir':v_loss1, 'SSIM':pssim0, 'SSIM_ir': pssim1})
+            if wimg:
+                images = wandb.Image(pred0, caption="Top: Mask, Bottom: IR")
+                wandb.log({"Pred": images})
+            # wandb.log({'Tloss': t_loss, 'Vloss': v_loss0, 'Vloss_ir':v_loss1, 'SSIM':pssim0, 'SSIM_ir': pssim1})
             wandb.log({'Tloss': t_loss, 'Vloss': v_loss0, 'SSIM':pssim0})
+
+
 
 # if __name__ == "__main__":
 #     main()
