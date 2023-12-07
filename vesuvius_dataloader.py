@@ -13,7 +13,7 @@ import os
 import time
 import gc
 import cv2 as cv
-from utils.dataloader_fn import create_edge_mask, extract_training_points, normalize_training_points, extract_random_points, extract_training_and_val_points
+from utils.dataloader_fn import create_edge_mask, extract_training_points, normalize_training_points, extract_random_points, extract_training_and_val_points, extract_test_points, extract_render_points
 from utils.augmentations import *
 
 FROM = 0
@@ -85,7 +85,7 @@ label_as_img = Image.open(obf + f"Fragments/Frag1/inklabels.png")
 # Crop the rectangle from the original image
 #(1175,3602,63,63)
 print("Evaluation window: ", EVAL_WINDOW)
-val_label = label_as_img.crop((1175, 3602, 1175+EVAL_WINDOW, 3602+EVAL_WINDOW))
+val_label = label_as_img.crop((1000, 3500, 1000+64*40, 3500+64*15))
 
 # Save the cropped image
 val_label.save(obf + 'Fragments/Frag1/label.png')#"g:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/previews/label.png")
@@ -96,7 +96,7 @@ val_label.save(obf + 'Fragments/Frag1/label.png')#"g:/VS_CODE/CV/Vesuvius Challe
 Cut out a small window for validation during training
 '''
 small_rect = (1175, 3602, EVAL_WINDOW-1, EVAL_WINDOW-1) #H and W bust be a multiple of 64
-
+small_rect = (1000, 3500, 999+64*38, 3499+64*15)
 '''
 Generate all the training coordinates (points) for each segment
 '''
@@ -105,6 +105,13 @@ training_points_2a = extract_training_points(FRAG2_EDGES_LABELa)
 training_points_2b = extract_training_points(FRAG2_EDGES_LABELb)
 training_points_3 = extract_training_points(FRAG3_EDGES_LABEL)
 training_points_4 = extract_training_points(FRAG4_EDGES_LABEL)
+
+val_points_1 = extract_test_points(FRAG1_LABEL, small_rect)
+print(val_points_1[0], val_points_1[-1])
+
+val_points_1 = extract_render_points(val_points_1, 64*40, 64*15)
+print(len(val_points_1))
+print(val_points_1[0], val_points_1[-1])
 
 # Normalize the training points
 training_points_1 = normalize_training_points(training_points_1)
@@ -119,6 +126,11 @@ random_points_2b = extract_random_points(FRAG2_LABELb, 50)
 random_points_3 = extract_random_points(FRAG3_LABEL, 60)
 random_points_4 = extract_random_points(FRAG4_LABEL, 60)
 
+all_training_1, _ = extract_training_and_val_points(FRAG1_LABEL)
+all_training_2a = extract_training_points(FRAG2_LABELa)
+all_training_2b = extract_training_points(FRAG2_LABELb)
+all_training_3 = extract_training_points(FRAG3_LABEL)
+all_training_4 = extract_training_points(FRAG4_LABEL)
 
 hpp_F1_BLACK = [
     (2383,1818),
@@ -166,8 +178,8 @@ black_squaresf301_more = np.load(obf + 'Fragments_dataset/special_dataset/black0
 
 
 
-step = 64
-allBlack_step = 4
+step = 16
+allBlack_step = 64
 # Concatenate coordinates
 all_coordinates = np.concatenate([training_points_1[0::step], 
                                   training_points_2a[0::step], 
@@ -186,6 +198,8 @@ all_coordinates = np.concatenate([training_points_1[0::step],
                                   black_squaresf2a01[0::allBlack_step],
                                   black_squaresf301_more[0::allBlack_step],
                                   ])
+
+small_coordinates = np.concatenate([training_points_2b[0::step],black_squaresf102[0::allBlack_step]])
 
 print(len(training_points_1[0::step]))
 print(len(training_points_2a[0::step]))
@@ -223,6 +237,11 @@ class_labels = np.array(  [0] * len(training_points_1[0::step])
                         + [1] * len(black_squaresf2a01[0::allBlack_step])
                         + [3] * len(black_squaresf301_more[0::allBlack_step])                                                                                                                                                                                                                                             
                        )
+
+# Create an array for class labels
+small_labels = np.array( [2] * len(training_points_2b[0::step]) 
+                        + [0] * len(black_squaresf102[0::allBlack_step])
+                        )
 # Store all the labels
 all_labels = [FRAG1_LABEL, FRAG2_LABELa, FRAG2_LABELb, FRAG3_LABEL, FRAG4_LABEL]
 all_masks = [FRAG1_MASK, FRAG2_MASKa, FRAG2_MASKb, FRAG3_MASK, FRAG4_MASK]
@@ -251,12 +270,15 @@ class SubvolumeDatasetEval(data.Dataset):
         label = self.labels[scroll_id]
         image_stack = self.surfaces[scroll_id]
         y, x = self.coordinates[index]
+        #print(x,y)
         subvolume = image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         inkpatch = label[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         inkpatch = inkpatch.numpy().astype(np.uint8)
         #subvolume = torch.tensor(subvolume)
         #print(torch.max(subvolume), torch.min(subvolume))
         #jhgfjh
+        #print(subvolume.shape)
+        #print(inkpatch.shape)
         data = valid_transformations(image = subvolume, mask = inkpatch)
         subvolume = data['image'].unsqueeze(0)
         inkpatch = data['mask']
@@ -338,13 +360,15 @@ class SubvolumeDataset(data.Dataset):
 
 
 train_ds = SubvolumeDataset(fragments, all_labels, class_labels, all_coordinates)
-train_sanity_check = SubvolumeDatasetEval(fragments, all_labels, class_labels[[8,10,24,28]], all_coordinates[[8,10,24,28]])
+small_train = SubvolumeDataset(fragments, all_labels, small_labels, small_coordinates)
+train_sanity_check = SubvolumeDatasetEval(fragments, all_labels, small_labels[[8,10,24,28]], small_coordinates[[8,10,24,28]])
 print('sanity ch',len(train_sanity_check))
 total_train_iters = len(all_coordinates)
 #print(validation_points_1)
-validation_frag1 = SubvolumeDatasetEval(fragments, all_labels, np.array([0] * len(validation_points_1)), validation_points_1, task=0)
+validation_frag1 = SubvolumeDatasetEval(fragments, all_labels, np.array([0] * len(val_points_1)), val_points_1, task=0)
 total_val_iters = len(validation_points_1)
 
+#test2a = SubvolumeDatasetEval(fragments, all_labels, np.array([1] * len(test_points_1)), test_points_1, task=0)
 
 
 # Store additional information that can be useful for when we add many fragments
@@ -359,3 +383,5 @@ dataset = {
             "object": dataset_index,
             "names": dataset_names,
 }
+
+tasks = [0,1,2,3,4,5,6,7,8,9]

@@ -38,12 +38,13 @@ def extract_random_points(FRAG_MASK, num_points):
     return arr_mask[random_points]
 
 
-def extract_test_points(FRAG_MASK):
+def extract_test_points(FRAG_MASK, validation_rect):
     not_border = np.zeros(FRAG_MASK.shape, dtype=bool)
-    not_border[WINDOW:FRAG_MASK.shape[0]-WINDOW, WINDOW:FRAG_MASK.shape[1]-WINDOW] = True
-    arr_mask = np.array(FRAG_MASK) * not_border
-    test = np.ones(FRAG_MASK.shape, dtype=bool) * arr_mask
-    test = np.argwhere(test)
+    not_border[validation_rect[1]:validation_rect[1]+validation_rect[3]+1, validation_rect[0]:validation_rect[0]+validation_rect[2]+1] = True
+    #not_border[WINDOW:FRAG_MASK.shape[0]-WINDOW, WINDOW:FRAG_MASK.shape[1]-WINDOW] = True
+    #arr_mask = np.array(FRAG_MASK) * not_border
+    #test = np.ones(FRAG_MASK.shape, dtype=bool) * arr_mask
+    test = np.argwhere(not_border)
     return test
 
 def extract_training_and_val_points(FRAG_MASK, validation_rect= (1175,3602,63,63)):
@@ -74,7 +75,7 @@ def extract_training_points(FRAG_MASK):
     return train
 
 
-def extract_render_points(pixels, original_width, original_height, stride_H = 64, stride_W = 64):
+def extract_render_points(pixels, original_width, original_height, stride_H = 32, stride_W = 32):
     W = original_width
     H = original_height
     pixels_to_render = []

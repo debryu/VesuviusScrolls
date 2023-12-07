@@ -1,0 +1,21 @@
+2023-12-03 10:07:58,506 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Current SDK version is 0.15.12
+2023-12-03 10:07:58,506 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Configure stats pid to 10108
+2023-12-03 10:07:58,506 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Loading settings from C:\Users\debryu\.config\wandb\settings
+2023-12-03 10:07:58,506 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Loading settings from C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\settings
+2023-12-03 10:07:58,507 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-12-03 10:07:58,507 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-12-03 10:07:58,507 INFO    MainThread:10108 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'main.py', 'program_abspath': 'C:\\Users\\debryu\\Desktop\\VS_CODE\\HOME\\CV\\Vesuvius Challenge\\VesuviusScrolls\\main.py', 'program': 'C:\\Users\\debryu\\Desktop\\VS_CODE\\HOME\\CV\\Vesuvius Challenge\\VesuviusScrolls\\main.py'}
+2023-12-03 10:07:58,507 INFO    MainThread:10108 [wandb_init.py:_log_setup():528] Logging user logs to C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231203_100758-ecc94ala\logs\debug.log
+2023-12-03 10:07:58,508 INFO    MainThread:10108 [wandb_init.py:_log_setup():529] Logging internal logs to C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231203_100758-ecc94ala\logs\debug-internal.log
+2023-12-03 10:07:58,508 INFO    MainThread:10108 [wandb_init.py:init():568] calling init triggers
+2023-12-03 10:07:58,508 INFO    MainThread:10108 [wandb_init.py:init():575] wandb.init called with sweep_config: {}
+config: {'num_epochs': 100000, 'batch_size': 7, 'eval_batch_size': 2, 'lr': 1e-05, 'criterion': <function <lambda> at 0x00000172723F6EE0>, 'patience': 300000, 'early_stopping_epoch': 50000, 'warmup_stopping_epoch': 50, 'warmup_epochs': 9, 'multiplier': 10000, 'cosine_epochs': 50, 'max_grad_norm': 3.0, 'interval_val': 3, 'model_checkpoint': 20, 'seed': 0, 'run_name': 'DeBData', 'id': None, 'nn_module': 'RepMode', 'adopted_datasets': {'object': {0: 'Fragment 1', 1: 'Fragment 2a (splitted in 2 by height)', 2: 'Fragment 2b (splitted in 2 by height)', 3: 'Fragment 3', 4: 'Fragment 4'}, 'names': {0: 'F1_64-8181-6330.npy', 1: 'F2part1_64-7480-9506.npy', 2: 'F2part2_64-7480-9506.npy', 3: 'F3_64-7606-5249.npy', 4: 'F4_64-9791-6064.npy'}}, 'resume_epoch': 140, 'path_load_model': 'G:/VS_CODE/CV/Vesuvius Challenge/models/', 'path_exp_dir': 'exps/test', 'device': 'cuda', 'gpu_ids': [0], 'skipping_samples_every': None, 'skipping_blackSamples_every': None}
+2023-12-03 10:07:58,508 INFO    MainThread:10108 [wandb_init.py:init():618] starting backend
+2023-12-03 10:07:58,508 INFO    MainThread:10108 [wandb_init.py:init():622] setting up manager
+2023-12-03 10:07:58,520 INFO    MainThread:10108 [wandb_init.py:init():628] backend started and connected
+2023-12-03 10:07:58,529 INFO    MainThread:10108 [wandb_init.py:init():720] updated telemetry
+2023-12-03 10:07:58,652 INFO    MainThread:10108 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2023-12-03 10:07:59,257 INFO    MainThread:10108 [wandb_run.py:_on_init():2220] communicating current version
+2023-12-03 10:07:59,381 INFO    MainThread:10108 [wandb_run.py:_on_init():2229] got version response upgrade_message: "wandb version 0.16.0 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2023-12-03 10:07:59,381 INFO    MainThread:10108 [wandb_init.py:init():804] starting run threads in backend

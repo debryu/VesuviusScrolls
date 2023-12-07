@@ -1,0 +1,19 @@
+
+LR:  1e-09
+  0%|                                                                                          | 0/286 [00:05<?, ?it/s]
+Traceback (most recent call last):
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\main.py", line 315, in <module>
+    main()
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\main.py", line 263, in main
+    losses, m_losses = train(model, train_dl, opts, epoch+1, optimizer, scaler, use_wandb=WANDB)
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\main.py", line 66, in train
+    outputs = model(signal,task).to(torch.float64)
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\torch\nn\modules\module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\torch\nn\modules\module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\RepMode.py", line 85, in forward
+    task_emb = self.one_hot_task_embedding(t)
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\RepMode.py", line 80, in one_hot_task_embedding
+    task_embedding[i, task_id[i]] = 1
+IndexError: index 9 is out of bounds for dimension 1 with size 2

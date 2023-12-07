@@ -8,7 +8,19 @@ from tqdm import tqdm
 import torch.utils.data as data
 import math
 
-train_ds = dataloader.train_ds
+
+points = dataloader.all_training_1
+frag = dataloader.fragments[0]
+for point in tqdm(points):
+    y,x = point
+    subvolume = frag[:, y-32:y+32, x-32:x+32]
+    if not np.any(subvolume):
+        print(point)
+        break
+
+
+asdads
+train_ds = dataloader.small_train
 n_samples = len(train_ds)
 batch_size = 7
 iters = math.floor(n_samples/batch_size)

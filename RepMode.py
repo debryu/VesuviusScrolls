@@ -69,7 +69,7 @@ class Net(torch.nn.Module):
         self.normalization = torch.nn.BatchNorm2d(1)
         self.final_activation = torch.nn.Sigmoid()
         self.logit = nn.Conv2d(64, 1, 1, 1, 0)
-        self.dropout1 = nn.Dropout(0.15)
+        self.dropout_latent = nn.Dropout(0.2)
         self.dropout2 = nn.Dropout(0.05)
         #self.condensing2 = torch.nn.Conv2d(64*4,1, kernel_size=25, stride=1)
 
@@ -97,7 +97,7 @@ class Net(torch.nn.Module):
         x = self.bottle_block(x, task_emb)
 
         # decoding
-        #x = self.dropout(x)
+        x = self.dropout_latent(x)
         x = self.decoder_block4(x, x_skip4, task_emb)
         x = self.decoder_block3(x, x_skip3, task_emb)
         #x = self.dropout(x)
@@ -263,7 +263,7 @@ class MoDEConv(torch.nn.Module):
             self.kernel_size,
         )
         expert_avg5x5 = torch.einsum('oidhw,dhw->oidhw', self.expert_avg5x5_conv, self.expert_avg5x5_pool)
-
+        
         weights = list()
         for n in range(N):
             weight_nth_sample = torch.einsum('oidhw,o->oidhw', expert_conv5x5, g[n, 0, :]) + \
@@ -279,11 +279,16 @@ class MoDEConv(torch.nn.Module):
     def forward(self, x, t):
 
         N = x.shape[0]
-
-        g = self.gate(t)
-        g = g.view((N, self.num_experts, self.out_chan))
-        g = self.softmax(g)
-
+        #g = self.gate(t)
+        #g = g.view((N, self.num_experts, self.out_chan))
+        #g = self.softmax(g)
+        # G dimension: [Batch, num_experts, out_chan]
+        g = torch.zeros((N, self.num_experts, self.out_chan)).to(torch.device('cuda'))
+        ones = torch.ones((N,self.out_chan)).to(torch.device('cuda'))
+        g[:,0,:] = ones
+        
+        if (g.shape[2] == 1) and False:
+            print('routing', g)
         w = self.routing(g, N)
 
         if self.training:

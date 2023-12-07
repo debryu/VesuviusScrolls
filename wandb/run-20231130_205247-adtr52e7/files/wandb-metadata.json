@@ -1,0 +1,53 @@
+{
+    "os": "Windows-10-10.0.19045-SP0",
+    "python": "3.9.12",
+    "heartbeatAt": "2023-11-30T19:52:48.193155",
+    "startedAt": "2023-11-30T19:52:47.075010",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\debryu\\Desktop\\VS_CODE\\HOME\\CV\\Vesuvius Challenge\\VesuviusScrolls\\main.py",
+    "codePathLocal": "main.py",
+    "codePath": "main.py",
+    "git": {
+        "remote": "https://github.com/debryu/VesuviusScrolls",
+        "commit": "6598074045b6f1c612a8ba0cec107558e4a95093"
+    },
+    "email": "nicola.debole@gmail.com",
+    "root": "C:/Users/debryu/Desktop/VS_CODE/HOME/CV/Vesuvius Challenge/VesuviusScrolls",
+    "host": "DESKTOP-VDBR0MJ",
+    "username": "debryu",
+    "executable": "C:\\Users\\debryu\\anaconda3\\envs\\repmode\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3301.0,
+        "min": 0.0,
+        "max": 3301.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3301.0,
+            "min": 0.0,
+            "max": 3301.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 930.9518623352051,
+            "used": 852.1480941772461
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3060",
+            "memory_total": 12884901888
+        }
+    ],
+    "memory": {
+        "total": 15.924671173095703
+    }
+}

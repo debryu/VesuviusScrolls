@@ -19,3 +19,8 @@ config: {'num_epochs': 100000, 'batch_size': 7, 'eval_batch_size': 2, 'lr': 0.00
 2023-11-26 20:28:33,472 INFO    MainThread:5016 [wandb_run.py:_on_init():2229] got version response upgrade_message: "wandb version 0.16.0 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
 
 2023-11-26 20:28:33,472 INFO    MainThread:5016 [wandb_init.py:init():804] starting run threads in backend
+2023-11-26 20:28:45,144 INFO    MainThread:5016 [wandb_run.py:_console_start():2199] atexit reg
+2023-11-26 20:28:45,144 INFO    MainThread:5016 [wandb_run.py:_redirect():2054] redirect: wrap_raw
+2023-11-26 20:28:45,144 INFO    MainThread:5016 [wandb_run.py:_redirect():2119] Wrapping output streams.
+2023-11-26 20:28:45,144 INFO    MainThread:5016 [wandb_run.py:_redirect():2144] Redirects installed.
+2023-11-26 20:28:45,145 INFO    MainThread:5016 [wandb_init.py:init():845] run started, returning control to user process

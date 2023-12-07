@@ -36,13 +36,13 @@ class GradualWarmupSchedulerV2(GradualWarmupScheduler):
 
 def get_scheduler(optimizer, multiplier=1.0, warmup_epoch = 1, cosine_epoch=10):
     scheduler_cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, cosine_epoch, eta_min=1e-7)
+        optimizer, cosine_epoch, eta_min=1e-9)
     scheduler = GradualWarmupSchedulerV2(
         optimizer, multiplier=multiplier, total_epoch=warmup_epoch, after_scheduler=scheduler_cosine)
 
     return scheduler
 
 def scheduler_step(scheduler, epoch):
-    scheduler.step(epoch)
+    scheduler.step()
 
     

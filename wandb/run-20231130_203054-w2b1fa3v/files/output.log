@@ -1,0 +1,22 @@
+  0%|                                                                                         | 0/1924 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\main.py", line 314, in <module>
+    main()
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\main.py", line 262, in main
+    losses, m_losses = train(model, train_dl, opts, epoch+1, optimizer, scaler, use_wandb=WANDB)
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\main.py", line 59, in train
+    for i,data in enumerate(tqdm(dataloader)):
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\tqdm\std.py", line 1182, in __iter__
+    for obj in iterable:
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\torch\utils\data\dataloader.py", line 630, in __next__
+    data = self._next_data()
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\torch\utils\data\dataloader.py", line 674, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\torch\utils\data\_utils\fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "C:\Users\debryu\anaconda3\envs\repmode\lib\site-packages\torch\utils\data\_utils\fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\vesuvius_dataloader.py", line 287, in __getitem__
+    scroll_id = self.class_labels[index]
+IndexError: index 6325 is out of bounds for axis 0 with size 6275
+LR:  1e-09

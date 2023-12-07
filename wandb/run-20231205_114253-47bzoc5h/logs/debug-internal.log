@@ -1,0 +1,325 @@
+2023-12-05 11:42:53,672 INFO    StreamThr :22404 [internal.py:wandb_internal():86] W&B internal server running at pid: 22404, started at: 2023-12-05 11:42:53.671975
+2023-12-05 11:42:53,679 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status
+2023-12-05 11:42:53,682 INFO    WriterThread:22404 [datastore.py:open_for_write():85] open: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\run-47bzoc5h.wandb
+2023-12-05 11:42:53,687 DEBUG   SenderThread:22404 [sender.py:send():380] send: header
+2023-12-05 11:42:53,776 DEBUG   SenderThread:22404 [sender.py:send():380] send: run
+2023-12-05 11:42:54,287 INFO    SenderThread:22404 [dir_watcher.py:__init__():211] watching files in: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files
+2023-12-05 11:42:54,287 INFO    SenderThread:22404 [sender.py:_start_run_threads():1122] run started: 47bzoc5h with start time 1701772973.673977
+2023-12-05 11:42:54,311 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: check_version
+2023-12-05 11:42:54,312 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: check_version
+2023-12-05 11:42:54,453 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: run_start
+2023-12-05 11:42:54,490 DEBUG   HandlerThread:22404 [system_info.py:__init__():32] System info init
+2023-12-05 11:42:54,490 DEBUG   HandlerThread:22404 [system_info.py:__init__():47] System info init done
+2023-12-05 11:42:54,490 INFO    HandlerThread:22404 [system_monitor.py:start():194] Starting system monitor
+2023-12-05 11:42:54,493 INFO    SystemMonitor:22404 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-12-05 11:42:54,493 INFO    HandlerThread:22404 [system_monitor.py:probe():214] Collecting system info
+2023-12-05 11:42:54,499 INFO    SystemMonitor:22404 [interfaces.py:start():190] Started cpu monitoring
+2023-12-05 11:42:54,502 INFO    SystemMonitor:22404 [interfaces.py:start():190] Started disk monitoring
+2023-12-05 11:42:54,505 INFO    SystemMonitor:22404 [interfaces.py:start():190] Started gpu monitoring
+2023-12-05 11:42:54,514 INFO    SystemMonitor:22404 [interfaces.py:start():190] Started memory monitoring
+2023-12-05 11:42:54,517 DEBUG   HandlerThread:22404 [system_info.py:probe():196] Probing system
+2023-12-05 11:42:54,532 INFO    SystemMonitor:22404 [interfaces.py:start():190] Started network monitoring
+2023-12-05 11:42:54,535 DEBUG   HandlerThread:22404 [system_info.py:_probe_git():181] Probing git
+2023-12-05 11:42:54,700 DEBUG   HandlerThread:22404 [system_info.py:_probe_git():189] Probing git done
+2023-12-05 11:42:54,700 DEBUG   HandlerThread:22404 [system_info.py:probe():244] Probing system done
+2023-12-05 11:42:54,700 DEBUG   HandlerThread:22404 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.9.12', 'heartbeatAt': '2023-12-05T10:42:54.532399', 'startedAt': '2023-12-05T10:42:53.656976', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'C:\\Users\\debryu\\Desktop\\VS_CODE\\HOME\\CV\\Vesuvius Challenge\\VesuviusScrolls\\main.py', 'codePathLocal': 'main.py', 'codePath': 'main.py', 'git': {'remote': 'https://github.com/debryu/VesuviusScrolls', 'commit': '6598074045b6f1c612a8ba0cec107558e4a95093'}, 'email': 'nicola.debole@gmail.com', 'root': 'C:/Users/debryu/Desktop/VS_CODE/HOME/CV/Vesuvius Challenge/VesuviusScrolls', 'host': 'DESKTOP-VDBR0MJ', 'username': 'debryu', 'executable': 'C:\\Users\\debryu\\anaconda3\\envs\\repmode\\python.exe', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 3301.0, 'min': 0.0, 'max': 3301.0}, 'cpu_freq_per_core': [{'current': 3301.0, 'min': 0.0, 'max': 3301.0}], 'disk': {'/': {'total': 930.9518623352051, 'used': 855.3347129821777}}, 'gpu': 'NVIDIA GeForce RTX 3060', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 3060', 'memory_total': 12884901888}], 'memory': {'total': 15.924671173095703}}
+2023-12-05 11:42:54,700 INFO    HandlerThread:22404 [system_monitor.py:probe():224] Finished collecting system info
+2023-12-05 11:42:54,700 INFO    HandlerThread:22404 [system_monitor.py:probe():227] Publishing system info
+2023-12-05 11:42:54,700 DEBUG   HandlerThread:22404 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-12-05 11:42:54,701 DEBUG   HandlerThread:22404 [system_info.py:_save_pip():68] Saving pip packages done
+2023-12-05 11:42:54,702 DEBUG   HandlerThread:22404 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-12-05 11:42:55,303 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\conda-environment.yaml
+2023-12-05 11:42:55,303 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\requirements.txt
+2023-12-05 11:43:02,340 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\conda-environment.yaml
+2023-12-05 11:43:02,636 DEBUG   HandlerThread:22404 [system_info.py:_save_conda():87] Saving conda packages done
+2023-12-05 11:43:02,637 DEBUG   HandlerThread:22404 [system_info.py:_save_code():90] Saving code
+2023-12-05 11:43:02,714 DEBUG   HandlerThread:22404 [system_info.py:_save_code():111] Saving code done
+2023-12-05 11:43:02,714 DEBUG   HandlerThread:22404 [system_info.py:_save_patches():128] Saving git patches
+2023-12-05 11:43:03,352 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\diff.patch
+2023-12-05 11:43:03,353 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\code\main.py
+2023-12-05 11:43:03,353 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\code
+2023-12-05 11:43:04,016 DEBUG   HandlerThread:22404 [system_info.py:_save_patches():170] Saving git patches done
+2023-12-05 11:43:04,017 INFO    HandlerThread:22404 [system_monitor.py:probe():229] Finished publishing system info
+2023-12-05 11:43:04,024 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:04,024 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: keepalive
+2023-12-05 11:43:04,025 DEBUG   SenderThread:22404 [sender.py:send():380] send: files
+2023-12-05 11:43:04,025 INFO    SenderThread:22404 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-12-05 11:43:04,026 INFO    SenderThread:22404 [sender.py:_save_file():1378] saving file code\main.py with policy now
+2023-12-05 11:43:04,027 INFO    SenderThread:22404 [sender.py:_save_file():1378] saving file diff.patch with policy now
+2023-12-05 11:43:04,041 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:43:04,041 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:43:04,042 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:43:04,359 DEBUG   SenderThread:22404 [sender.py:send():380] send: telemetry
+2023-12-05 11:43:04,364 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\diff.patch
+2023-12-05 11:43:04,364 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\wandb-metadata.json
+2023-12-05 11:43:04,663 INFO    wandb-upload_0:22404 [upload_job.py:push():131] Uploaded file C:\Users\debryu\AppData\Local\Temp\tmpeyu98093wandb\9mu3e7t3-wandb-metadata.json
+2023-12-05 11:43:04,722 INFO    wandb-upload_1:22404 [upload_job.py:push():131] Uploaded file C:\Users\debryu\AppData\Local\Temp\tmpeyu98093wandb\3qysok5g-code/main.py
+2023-12-05 11:43:05,364 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:07,376 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:09,404 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:11,260 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:14,166 INFO    wandb-upload_2:22404 [upload_job.py:push():131] Uploaded file C:\Users\debryu\AppData\Local\Temp\tmpeyu98093wandb\gmzk8n0s-diff.patch
+2023-12-05 11:43:16,307 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:17,498 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:19,052 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:43:19,052 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:43:19,053 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:43:21,326 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:23,559 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:26,572 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:28,612 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\config.yaml
+2023-12-05 11:43:29,621 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:32,881 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:34,062 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:43:34,077 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:43:34,077 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:43:35,682 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:38,480 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:41,754 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:43,570 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:47,824 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:49,064 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:43:49,065 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:49,079 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:43:49,079 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:43:53,886 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:54,164 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:43:54,538 DEBUG   SystemMonitor:22404 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2023-12-05 11:43:54,539 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:43:57,911 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:43:59,976 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:03,967 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:04,076 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:44:04,076 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:44:04,077 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:44:05,285 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:10,035 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:10,750 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:16,093 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:16,095 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:19,076 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:44:19,077 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:44:19,092 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:44:20,135 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:21,300 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:24,549 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:44:26,199 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:26,572 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:32,275 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:32,496 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:34,088 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:44:34,089 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:44:34,104 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:44:37,736 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:38,325 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:42,746 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:44,396 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:47,791 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:49,094 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:44:49,094 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:44:49,110 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:44:52,483 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:53,366 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:44:54,563 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:44:58,544 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:44:58,574 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:02,593 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:03,944 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:04,098 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:45:04,099 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:45:04,114 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:45:08,664 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:09,957 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:12,710 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:15,132 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:16,747 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:19,119 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:45:19,120 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:45:19,120 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:45:20,311 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:22,812 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:24,578 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:45:25,584 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:27,861 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:30,874 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:31,892 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:34,131 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:45:34,132 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:45:34,132 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:45:35,941 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:36,268 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:41,305 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:42,007 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:46,037 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:46,952 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:49,141 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:45:49,142 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:45:49,142 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:45:52,112 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:45:52,295 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:54,578 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:45:57,497 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:45:58,168 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:03,498 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:04,135 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:46:04,135 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:46:04,151 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:46:04,231 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:09,104 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:10,283 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:14,301 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:14,486 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:19,139 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:46:19,140 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:46:19,155 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:46:20,355 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:20,384 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:24,394 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:24,580 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:46:25,589 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:30,452 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:31,103 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:34,136 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:46:34,137 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:46:34,167 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:46:34,482 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:36,312 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:40,542 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:41,920 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:46,599 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:47,451 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:49,142 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:46:49,143 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:46:49,173 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:46:52,659 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:52,689 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:46:54,583 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:46:56,701 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:46:58,309 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:02,735 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:03,320 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:04,139 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:47:04,140 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:47:04,187 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:47:06,773 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:09,281 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:10,807 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:14,465 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:14,838 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:18,890 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:19,138 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:47:19,139 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:47:19,201 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:47:20,394 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:24,594 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:47:24,936 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:25,601 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:28,973 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:31,491 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:34,153 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:47:34,153 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:47:34,215 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:47:35,040 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:37,411 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:37,479 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-05 11:47:37,480 DEBUG   SenderThread:22404 [sender.py:send():380] send: history
+2023-12-05 11:47:37,480 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: summary_record
+2023-12-05 11:47:37,482 INFO    SenderThread:22404 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-12-05 11:47:38,050 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\wandb-summary.json
+2023-12-05 11:47:39,053 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:40,666 DEBUG   SenderThread:22404 [sender.py:send():380] send: files
+2023-12-05 11:47:40,666 INFO    SenderThread:22404 [sender.py:_save_file():1378] saving file media\images\Training predictions_1_b7ff7e232187f96825d2.png with policy now
+2023-12-05 11:47:40,666 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: partial_history
+2023-12-05 11:47:40,668 DEBUG   SenderThread:22404 [sender.py:send():380] send: history
+2023-12-05 11:47:40,668 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: summary_record
+2023-12-05 11:47:40,669 INFO    SenderThread:22404 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-12-05 11:47:41,073 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:41,073 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\wandb-summary.json
+2023-12-05 11:47:41,074 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\media\images\Training predictions_1_b7ff7e232187f96825d2.png
+2023-12-05 11:47:41,075 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\media\images
+2023-12-05 11:47:41,075 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\media
+2023-12-05 11:47:41,174 INFO    wandb-upload_0:22404 [upload_job.py:push():131] Uploaded file C:\Users\debryu\AppData\Local\Temp\tmpeyu98093wandb\hxh357qj-media/images/Training predictions_1_b7ff7e232187f96825d2.png
+2023-12-05 11:47:41,725 INFO    wandb-upload_2:22404 [upload_job.py:push():131] Uploaded file C:\Users\debryu\AppData\Local\Temp\tmpeyu98093wandb\ks0lgm0a-media/images/Training predictions_1_b7ff7e232187f96825d2.png
+2023-12-05 11:47:42,693 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:43,085 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:47,138 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:48,250 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:49,157 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:47:49,157 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:47:49,219 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:47:51,161 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:54,232 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:47:54,605 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:47:55,196 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:47:59,650 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:01,256 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:04,160 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:48:04,161 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:48:04,222 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:48:05,296 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:05,543 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:09,338 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:11,487 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:15,405 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:17,483 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:19,162 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:48:19,163 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:48:19,224 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:48:19,460 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:23,046 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:23,500 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:24,619 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:48:28,448 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:31,571 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:33,850 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:34,177 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:48:34,177 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:48:34,238 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:48:34,616 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:38,657 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:38,857 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:44,434 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:44,732 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:48,789 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:49,203 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:48:49,204 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:48:49,250 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:48:49,483 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:52,824 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:54,632 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:48:54,633 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:48:58,894 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:48:59,653 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:04,206 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:49:04,207 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:49:04,252 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:49:04,713 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:04,954 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:08,996 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:10,034 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:13,038 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:15,244 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:17,071 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:19,227 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:49:19,227 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:49:19,258 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:49:20,460 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:23,145 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:24,640 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:49:25,651 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:27,176 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:31,643 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:33,235 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:34,236 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-05 11:49:34,237 DEBUG   SenderThread:22404 [sender.py:send_request():407] send_request: stop_status
+2023-12-05 11:49:34,266 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-05 11:49:37,275 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:37,540 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:41,323 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:42,680 DEBUG   HandlerThread:22404 [handler.py:handle_request():146] handle_request: status_report
+2023-12-05 11:49:45,368 INFO    Thread-16 :22404 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\debryu\Desktop\VS_CODE\HOME\CV\Vesuvius Challenge\VesuviusScrolls\wandb\run-20231205_114253-47bzoc5h\files\output.log
+2023-12-05 11:49:47,604 INFO    memory    :22404 [interfaces.py:monitor():140] Process proc.memory.rssMB has exited.
+2023-12-05 11:49:47,605 DEBUG   SystemMonitor:22404 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2023-12-05 11:49:47,605 DEBUG   SystemMonitor:22404 [system_monitor.py:_start():183] Publishing last batch of metrics
+2023-12-05 11:49:47,606 DEBUG   SenderThread:22404 [sender.py:send():380] send: stats
+2023-12-05 11:49:48,208 INFO    MainThread:22404 [internal.py:handle_exit():76] Internal process exited

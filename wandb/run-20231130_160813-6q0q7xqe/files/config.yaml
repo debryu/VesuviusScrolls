@@ -1,0 +1,135 @@
+wandb_version: 1
+
+num_epochs:
+  desc: null
+  value: 100000
+batch_size:
+  desc: null
+  value: 7
+eval_batch_size:
+  desc: null
+  value: 2
+lr:
+  desc: null
+  value: 0.0001
+criterion:
+  desc: null
+  value: utils.losses.<lambda>
+patience:
+  desc: null
+  value: 300000
+early_stopping_epoch:
+  desc: null
+  value: 500
+warmup_stopping_epoch:
+  desc: null
+  value: 50
+warmup_epochs:
+  desc: null
+  value: 9
+multiplier:
+  desc: null
+  value: 10000
+cosine_epochs:
+  desc: null
+  value: 50
+max_grad_norm:
+  desc: null
+  value: 3.0
+interval_val:
+  desc: null
+  value: 3
+model_checkpoint:
+  desc: null
+  value: 20
+seed:
+  desc: null
+  value: 0
+run_name:
+  desc: null
+  value: DeBData
+id:
+  desc: null
+  value: null
+nn_module:
+  desc: null
+  value: RepMode
+adopted_datasets:
+  desc: null
+  value:
+    object:
+      '0': Fragment 1
+      '1': Fragment 2a (splitted in 2 by height)
+      '2': Fragment 2b (splitted in 2 by height)
+      '3': Fragment 3
+      '4': Fragment 4
+    names:
+      '0': F1_64-8181-6330.npy
+      '1': F2part1_64-7480-9506.npy
+      '2': F2part2_64-7480-9506.npy
+      '3': F3_64-7606-5249.npy
+      '4': F4_64-9791-6064.npy
+resume_epoch:
+  desc: null
+  value: null
+path_load_model:
+  desc: null
+  value: G:/VS_CODE/CV/Vesuvius Challenge/models/
+path_exp_dir:
+  desc: null
+  value: exps/test
+device:
+  desc: null
+  value: cuda
+gpu_ids:
+  desc: null
+  value:
+  - 0
+skipping_samples_every:
+  desc: null
+  value: 128
+skipping_blackSamples_every:
+  desc: null
+  value: 64
+_wandb:
+  desc: null
+  value:
+    code_path: code/main.py
+    python_version: 3.9.12
+    cli_version: 0.15.12
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1701356893.109403
+    t:
+      1:
+      - 1
+      - 5
+      - 41
+      - 49
+      - 53
+      - 55
+      - 63
+      - 74
+      - 80
+      2:
+      - 1
+      - 5
+      - 41
+      - 49
+      - 53
+      - 55
+      - 63
+      - 74
+      - 80
+      3:
+      - 13
+      - 16
+      - 23
+      - 37
+      4: 3.9.12
+      5: 0.15.12
+      8:
+      - 3
+      - 8
+      13: windows-amd64

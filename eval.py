@@ -38,7 +38,7 @@ opts = Options(
     id = None,
     nn_module = 'RepMode',
     adopted_datasets = dataloader.dataset,
-    resume_epoch = 20,
+    resume_epoch = 140,
     path_load_model = f"G:/VS_CODE/CV/Vesuvius Challenge/models/",
     path_exp_dir='exps/test',
     device='cuda',
@@ -49,7 +49,7 @@ opts = Options(
 
 
 
-def evaluate(model, dataloader, opts, epoch, prev_image_folder = "G:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/previews/",EWW = 64*14, EWH = 64*14, stride_W = 64, stride_H = 64):
+def evaluate(model, dataloader, opts, epoch, prev_image_folder = "G:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/previews/",EWW = 64*15, EWH = 64*40, stride_W = 32, stride_H = 32):
     model.eval()
     eval_loss = []
     subsection_predictions = []
@@ -67,6 +67,7 @@ def evaluate(model, dataloader, opts, epoch, prev_image_folder = "G:/VS_CODE/CV/
             start = int((64-stride_W)/2)
             end = int(start + stride_W)
             # Add to the list of predictions
+            #print(outputs[:,:,start:end,start:end].shape)
             subsection_predictions.append(outputs[:,:,start:end,start:end])
             target = target.unsqueeze(1).to(torch.float64)
             loss = opts.criterion(outputs, target)
@@ -103,35 +104,17 @@ def evaluate(model, dataloader, opts, epoch, prev_image_folder = "G:/VS_CODE/CV/
 def main():
 
     # Load the dataset
-    train_ds = dataloader.train_ds
-    valid_ds = dataloader.validation_frag1
-    
-    train_dl = data.DataLoader(train_ds, batch_size = opts.batch_size, shuffle=True)
-    validation_dl = data.DataLoader(valid_ds, batch_size = opts.eval_batch_size, shuffle=False)
+    #test_ds = dataloader.test2a
+    #test = data.DataLoader(test_ds, batch_size = opts.eval_batch_size, shuffle=False)
+    val_ds = dataloader.validation_frag1
+    val_dl = data.DataLoader(val_ds, batch_size = opts.eval_batch_size, shuffle=False)
 
     '''----------------------------------------------------------------------------------------------------'''
     # Load the model
     model = Net(opts).to(opts.device)
-    
-    if opts.resume_epoch is not None:
-        model.load_state_dict(torch.load(opts.path_load_model + f"model_checkpoint_DeBData_{opts.resume_epoch}.p"))
-        training_range = range(opts.resume_epoch+1,opts.num_epochs)
-    else:
-        training_range = range(opts.num_epochs)
-
-    '''----------------------------------------------------------------------------------------------------'''
-    # Optimizer, scheduler and scaler
-    optimizer = torch.optim.AdamW(model.parameters(), lr=opts.lr)
-    scheduler = get_scheduler(optimizer, multiplier=1, total_epoch=opts.warmup_epochs)
-    scaler = GradScaler()
-    '''----------------------------------------------------------------------------------------------------'''
-
-
-    best_model_loss = 100000000
-    pat = opts.patience
-    #TRAIN & EVAL LOOP
-    
-    losses = evaluate(model, validation_dl, opts, 0)
+    model.load_state_dict(torch.load(opts.path_load_model + f"model_DeBData_{opts.resume_epoch}.p"))
+    #s_ = evaluate(model, test, opts, 1)
+    losses = evaluate(model, val_dl, opts, 0)
     final_loss = np.mean(losses)
     print("Loss: ",final_loss)
 
