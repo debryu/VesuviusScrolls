@@ -18,10 +18,14 @@ import gc
 import cv2 as cv
 from utils.dataloader_fn import create_edge_mask, extract_training_points, normalize_training_points, extract_random_points, extract_training_and_val_points, extract_test_points, extract_render_points
 from utils.augmentations import *
+from utils.various import Options, get_scheduler, scheduler_step
+import bucket_loader as dataloader
+from RepMode import Net
 
 '''
 '''
 COORD = (1310,3835)
+#COORD = (2289,3841)
 FRAG = 0
 ''''''
 base_folder = 'C:/Users/debryu/Desktop/VS_CODE/HOME/CV/Vesuvius_ds/complete dataset/' #"G:/VS_CODE/CV/Vesuvius Challenge/"
@@ -57,5 +61,48 @@ sublabel = label[y-WINDOW:y+WINDOW, x-WINDOW:x+WINDOW]
 plt.imshow(sublabel)
 plt.show()
 subvolume = torch.tensor(image_stack[:, y-WINDOW:y+WINDOW, x-WINDOW:x+WINDOW])
+
+# Load the model
+opts = Options(
+    num_epochs=100000,
+    batch_size = 7,
+    eval_batch_size = 2,
+    lr=0.00001,#0.0000001, 
+    patience = 300000,
+    early_stopping_epoch = 50000,
+    warmup_stopping_epoch = 400,
+    warmup_epochs = 9,
+    multiplier = 10000,
+    cosine_epochs = 10, 
+    max_grad_norm = 3.0,
+    interval_val=1,
+    model_checkpoint=1,
+    seed=0,
+    run_name = "DeBData",
+    id = None,
+    nn_module = 'RepMode',
+    adopted_datasets = dataloader.dataset,
+    resume_epoch = 13,
+    path_load_model = f"G:/VS_CODE/CV/Vesuvius Challenge/models/",
+    path_exp_dir='exps/test',
+    device='cuda',
+    gpu_ids=[0],
+    skipping_samples_every = dataloader.step,
+    skipping_blackSamples_every = dataloader.allBlack_step,
+)
+model = Net(opts).to(opts.device)
+model.load_state_dict(torch.load(opts.path_load_model + f"model_DeBData_25.p"))
+model.eval()
+
+subvolume = subvolume.unsqueeze(0).unsqueeze(0).to(opts.device)
+task = torch.tensor(0).unsqueeze(0).to(opts.device)
+print(task)
+
+prediction, latent = model(subvolume.to(opts.device),task)
+latent -= torch.min(latent)
+latent /= torch.max(latent)
+print(torch.max(latent), torch.min(latent))
+plot3D(latent, f"latent_{FRAG}_{x}_{y}")
 plot3D(subvolume, f"{FRAG}_{x}_{y}")
+plot2D(prediction, f"prediction_{FRAG}_{x}_{y}")
 plot2D(sublabel, f"LABEL{FRAG}_{x}_{y}")

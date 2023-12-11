@@ -86,6 +86,7 @@ class Net(torch.nn.Module):
 
         # encoding
         #x = self.dropout1(x)
+        print(x.shape)
         x, x_skip1 = self.encoder_block1(x, task_emb)
         x, x_skip2 = self.encoder_block2(x, task_emb)
         #x = self.dropout(x)
@@ -108,6 +109,7 @@ class Net(torch.nn.Module):
         #print(outputs.shape)
         # Squeeze to 2D
         outputs = outputs.squeeze(1)
+        ThreeDlatent = outputs
         #outputs = torch.mean(outputs, dim=1).unsqueeze(1)
          # [N, 64, 64, 64] 
         outputs = self.logit(outputs)
@@ -151,7 +153,7 @@ class Net(torch.nn.Module):
         #outputs = outputs.squeeze(-1).squeeze(-1).reshape(outputs.shape[0],1,64,64)
         #print(outputs.shape)
         
-        return outputs
+        return outputs, ThreeDlatent
 
 
 class MoDEEncoderBlock(torch.nn.Module):

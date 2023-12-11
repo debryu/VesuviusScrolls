@@ -271,6 +271,7 @@ class SubvolumeDatasetEval(data.Dataset):
         image_stack = self.surfaces[scroll_id]
         y, x = self.coordinates[index]
         #print(x,y)
+        #print(x,y)
         subvolume = image_stack[:, y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         inkpatch = label[y-WINDOW:y+WINDOW+ODD_WINDOW, x-WINDOW:x+WINDOW+ODD_WINDOW]
         inkpatch = inkpatch.numpy().astype(np.uint8)

@@ -48,9 +48,9 @@ def plot2D(chunk,name,path="G:/VS_CODE/CV/Vesuvius Challenge/Fragments/Frag1/plo
     
     chunk = chunk.reshape(64,64)
     if chunk.device.type == "cuda":
-        volume_data = chunk.cpu().detach().numpy()*255
+        volume_data = chunk.cpu().detach().numpy()#*255
     else:
-        volume_data = chunk.detach().numpy()*255
+        volume_data = chunk.detach().numpy()#*255
         
     size=chunk.shape[0]
     X, Y= np.meshgrid(np.arange(size), np.arange(size))

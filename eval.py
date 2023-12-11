@@ -38,7 +38,7 @@ opts = Options(
     id = None,
     nn_module = 'RepMode',
     adopted_datasets = dataloader.dataset,
-    resume_epoch = 140,
+    resume_epoch = 25,
     path_load_model = f"G:/VS_CODE/CV/Vesuvius Challenge/models/",
     path_exp_dir='exps/test',
     device='cuda',
@@ -96,7 +96,7 @@ def evaluate(model, dataloader, opts, epoch, prev_image_folder = "G:/VS_CODE/CV/
     #bw_output = bw_output.astype(np.uint8)
     #print(bw_output)
     # Save the image
-    plt.imsave(prev_image_folder + f"epoch_{epoch+1}.png", bw_output)
+    plt.imsave(prev_image_folder + f"epoch_1.png", bw_output)
     print('[EVAL]',epoch+1,' - Loss: ',np.mean(eval_loss))
     return eval_loss
 

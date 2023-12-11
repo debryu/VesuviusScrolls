@@ -42,7 +42,7 @@ opts = Options(
     id = None,
     nn_module = 'RepMode',
     adopted_datasets = dataloader.dataset,
-    resume_epoch = None,
+    resume_epoch = 13,
     path_load_model = f"G:/VS_CODE/CV/Vesuvius Challenge/models/",
     path_exp_dir='exps/test',
     device='cuda',
@@ -248,6 +248,8 @@ def main():
     if opts.resume_epoch is not None:
         model.load_state_dict(torch.load(opts.path_load_model + f"model_DeBData_{opts.resume_epoch}.p"))
         training_range = range(opts.resume_epoch+1,opts.num_epochs)
+        opts.warmup_epochs = 1
+        opts.warmup_stopping_epoch = 1
     else:
         training_range = range(opts.num_epochs)
 
@@ -282,8 +284,8 @@ def main():
             line_3 = np.concatenate((imgs[4],imgs[5]), axis=1)
             line_4 = np.concatenate((imgs[6],imgs[7]), axis=1)
             grid_array_l = np.concatenate((line_1,line_2,line_3,line_4), axis=0)
-            imgs = wandb.Image(grid_array_l, caption="PREDICTION | LABEL")
-            wandb.log({"Training predictions": imgs})
+            #imgs = wandb.Image(grid_array_l, caption="PREDICTION | LABEL")
+            #wandb.log({"Training predictions": imgs})
 
         if (epoch+1) % opts.interval_val == 0:
             losses, m_losses = evaluate(model, validation_dl, opts, epoch+1)

@@ -132,7 +132,7 @@ all_coord3 = np.concatenate(bucks3)
 all_coord4 = np.concatenate(bucks4)
 all_coords = [all_coord1, all_coord2a, all_coord2b, all_coord3, all_coord4, void_coords]
 all_coords = np.concatenate(all_coords)
-
+#class_labels = np.array([2]*len(all_coordinates))
 class_labels = np.array(  [0] * len(all_coord1)
                           + [1] * len(all_coord2a)
                            + [2] * len(all_coord2b)
